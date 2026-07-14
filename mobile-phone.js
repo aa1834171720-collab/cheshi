@@ -1339,101 +1339,6 @@ body #mobile-trigger-btn.tablet-mode {
     }
 }
 
-/* 小屏手机适配 (≤360px) */
-@media (max-width: 360px) {
-    /* 框架适配 */
-    .mobile-phone-frame,
-    #mobile-phone-overlay .mobile-phone-frame {
-        width: 95% !important;
-        border-radius: 25px !important;
-        padding: 5px !important;
-    }
-    
-    #mobile-phone-overlay .mobile-phone-screen {
-        border-radius: 20px !important;
-    }
-    
-    /* 触发按钮 */
-    #mobile-trigger-btn {
-        width: 40px;
-        height: 40px;
-        bottom: 10px;
-        right: 10px;
-    }
-    
-    /* 状态栏 */
-    .mobile-status-bar {
-        height: 34px;
-        padding: 0 8px;
-        font-size: 11px;
-    }
-    
-    /* 应用 Header */
-    .app-header {
-        height: 40px;
-        padding: 0 10px;
-    }
-    
-    .app-title {
-        font-size: 15px;
-    }
-    
-    .back-button,
-    .pin-btn {
-        font-size: 16px;
-        padding: 3px;
-    }
-    
-    /* 主屏幕 */
-    .home-screen {
-        padding: 10px;
-        gap: 10px;
-    }
-    
-    /* 天气卡片 */
-    .weather-card {
-        padding: 10px;
-    }
-    
-    .weather-time {
-        font-size: 20px;
-    }
-    
-    .weather-date {
-        font-size: 11px;
-    }
-    
-    /* 应用图标 */
-    .app-icon-bg {
-        width: 42px;
-        height: 42px;
-        font-size: 21px;
-        border-radius: 10px;
-    }
-    
-    .app-label {
-        font-size: 9px;
-    }
-    
-    .app-grid {
-        gap: 10px;
-    }
-    
-    .app-row {
-        gap: 12px;
-    }
-    
-    /* 应用内容 */
-    .app-body {
-        padding: 10px;
-    }
-    
-    /* 列表项 */
-    .list-item-name {
-        font-size: 12px;
-    }
-    
-    .list-item-value {
         font-size: 13px;
     }
     
@@ -1491,23 +1396,7 @@ body #mobile-trigger-btn.tablet-mode {
     }
 }
 
-/* 横屏优化 */
-@media (max-width: 768px) and (orientation: landscape) {
-    .mobile-phone-frame,
-    #mobile-phone-overlay .mobile-phone-frame {
-        width: 50% !important;
-        max-width: 500px !important;
-    }
-    
-    .home-screen,
-    .app-body {
-        padding: 10px;
-    }
-    
-    .app-grid {
-        gap: 10px;
-    }
-}
+
 
 /* ==================== 滚动条 ==================== */
 .home-screen::-webkit-scrollbar,
@@ -1597,36 +1486,6 @@ body #mobile-trigger-btn.tablet-mode {
 .wallpaper-close-btn {
     position: absolute;
     top: 10px;
-    right: 10px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 201;
-}
-
-.wallpaper-close-btn i {
-    font-size: 20px;
-    color: #ffffff;
-}
-
-.wallpaper-close-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: rotate(90deg);
-}
-
-.wallpaper-close-btn:active {
-    transform: rotate(90deg) scale(0.9);
-}
-</style>
-`;
 
 // ==================== 全局变量 ====================
 let currentPhoneData = null;
