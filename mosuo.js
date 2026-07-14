@@ -1717,3 +1717,1086 @@ function initializeMobilePhone() {
 
         $('#phone-app-title').text(' 论坛设置');
         $('#phone-app-body').html(html);
+//  关键！绑定所有按钮事件（在HTML插入后立即绑定）
+        setTimeout(() => {
+            // 恢复已保存的模型到下拉框
+            const savedModel = apiConfig.model;
+            if (savedModel) {
+                const $modelSelect = $('#api-model');
+                // 如果已保存模型，添加到下拉框并选中
+                $modelSelect.append($('<option>', {
+                    value: savedModel,
+                    text: savedModel,
+                    selected: true
+                }));
+            }
+
+            // 绑定API类型切换事件
+            $('#forum-api-type').off('change').on('change', function () {
+                const isCustom = $(this).val() === 'custom';
+                $('#custom-api-settings').toggle(isCustom);
+            });
+
+            // 绑定获取模型按钮
+            $('#fetch-models-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneFetchModels && window.phoneFetchModels();
+            });
+
+            // 绑定测试连接按钮
+            $('#test-connection-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneTestConnection && window.phoneTestConnection();
+            });
+
+            // 绑定管理自定义风格按钮
+            $('#manage-custom-styles-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneManageCustomStyles && window.phoneManageCustomStyles();
+            });
+
+            // 绑定保存按钮
+            $('.phone-forum-save-settings-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneSaveForumSettings && window.phoneSaveForumSettings();
+            });
+
+            // 绑定关闭按钮
+            $('.phone-forum-close-settings-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneCloseForumSettings && window.phoneCloseForumSettings();
+            });
+
+        }, 0);
+    };
+
+    window.phoneSaveForumSettings = function () {
+
+        try {
+            const manager = window.phoneForumManager;
+
+            if (!manager) {
+                if (typeof toastr !== 'undefined') {
+                    toastr.error('管理器未初始化！', '论坛');
+                }
+                return;
+            }
+
+            // 读取所有设置值
+            const forumStyle = $('#forum-style').val();
+            const apiType = $('#forum-api-type').val();
+            const usePresetAndWorldBook = $('#use-preset-worldbook').is(':checked');
+
+            // 保存论坛设置
+            manager.settings.forumStyle = forumStyle;
+            manager.settings.apiType = apiType;
+            manager.settings.usePresetAndWorldBook = usePresetAndWorldBook;
+            manager.saveSettings();
+
+            // 保存独立 API 配置（只有选择"自定义API"时才启用）
+            manager.apiConfig.settings.enabled = (apiType === 'custom');
+
+            if (apiType === 'custom') {
+                //  读取独立API配置（限定在当前显示的phone-app-body内）
+                const $currentBody = $('#phone-app-body');
+                const selectedModel = $currentBody.find('#api-model').val() || '';
+
+                manager.apiConfig.settings.apiUrl = $currentBody.find('#api-url').val();
+                manager.apiConfig.settings.apiKey = $currentBody.find('#api-key').val();
+                manager.apiConfig.settings.model = selectedModel;
+
+                // 保存自动生成论坛配置
+                manager.apiConfig.settings.autoGenerate = {
+                    enabled: $currentBody.find('#auto-generate-enabled').is(':checked'),
+                    threshold: parseInt($currentBody.find('#auto-generate-threshold').val()) || 10,
+                    showNotification: $currentBody.find('#auto-generate-notification').is(':checked')
+                };
+
+                // 如果启用了自动生成，重置计数器
+                if (manager.apiConfig.settings.autoGenerate.enabled) {
+                    manager.apiConfig.resetAutoGenerateCounter();
+                }
+            }
+
+            manager.apiConfig.saveSettings();
+
+
+            if (typeof toastr !== 'undefined') {
+                toastr.success('设置已保存！', '论坛');
+            }
+
+            //  返回论坛界面 - 重新生成而不是恢复旧HTML，确保事件绑定正确
+            setTimeout(() => {
+
+                // 清空导航栈（因为我们要重新生成，不需要旧内容）
+                navigationStack.length = 0;
+
+                // 重新生成论坛面板，确保所有事件都正确绑定
+                $('#phone-app-title').text(' 论坛');
+                $('#phone-app-body').html(generateForumPanel());
+
+            }, 100);
+        } catch (error) {
+            if (typeof toastr !== 'undefined') {
+                toastr.error('保存设置失败: ' + error.message, '论坛');
+            }
+        }
+    };
+
+    window.phoneCloseForumSettings = function () {
+
+        //  重新生成论坛面板而不是恢复旧HTML，确保事件绑定正确
+        // 清空导航栈
+        navigationStack.length = 0;
+
+        // 重新生成论坛面板
+        $('#phone-app-title').text(' 论坛');
+        $('#phone-app-body').html(generateForumPanel());
+
+    };
+
+    //  自定义风格管理函数
+    window.phoneManageCustomStyles = function () {
+
+        const manager = window.phoneForumManager;
+        const customStyles = manager.settings.customStyles || [];
+
+        const html = `
+            <div style="padding: 12px;">
+                <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #2d3748;"> 自定义风格管理</h3>
+                
+                <button id="add-custom-style-btn" style="width: 100%; padding: 10px; margin-bottom: 16px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                     新建自定义风格
+                </button>
+                
+                <div id="custom-styles-list" style="margin-bottom: 16px;">
+                    ${customStyles.length === 0 ?
+                '<div style="text-align: center; padding: 20px; color: #718096; font-size: 12px;">暂无自定义风格</div>' :
+                customStyles.map((style, index) => `
+                            <div class="custom-style-item" data-index="${index}" style="background: white; border: 1px solid #cbd5e0; border-radius: 4px; padding: 10px; margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div style="font-weight: 500; color: #2d3748; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(style.name)}</div>
+                                        <div style="font-size: 11px; color: #718096; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(style.prompt.substring(0, 50))}...</div>
+                                    </div>
+                                    <div style="display: flex; gap: 6px; margin-left: 10px;">
+                                        <button class="edit-custom-style-btn" data-index="${index}" style="padding: 6px 10px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                                             编辑
+                                        </button>
+                                        <button class="delete-custom-style-btn" data-index="${index}" style="padding: 6px 10px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">
+                                             删除
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')
+            }
+                </div>
+                
+                <button class="phone-back-to-settings-btn" style="width: 100%; padding: 10px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                    ← 返回设置
+                </button>
+            </div>
+        `;
+
+        $('#phone-app-title').text(' 自定义风格管理');
+        $('#phone-app-body').html(html);
+
+        // 绑定事件
+        setTimeout(() => {
+            // 新建按钮
+            $('#add-custom-style-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneShowCustomStyleEditor && window.phoneShowCustomStyleEditor();
+            });
+
+            // 编辑按钮
+            $('.edit-custom-style-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const index = $(this).data('index');
+                window.phoneShowCustomStyleEditor && window.phoneShowCustomStyleEditor(index);
+            });
+
+            // 删除按钮
+            $('.delete-custom-style-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const index = $(this).data('index');
+                if (confirm('确定要删除这个自定义风格吗？')) {
+                    window.phoneDeleteCustomStyle && window.phoneDeleteCustomStyle(index);
+                }
+            });
+
+            // 返回按钮
+            $('.phone-back-to-settings-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneOpenForumSettings && window.phoneOpenForumSettings();
+            });
+        }, 0);
+    };
+
+    window.phoneShowCustomStyleEditor = function (editIndex) {
+
+        const manager = window.phoneForumManager;
+        const isEdit = editIndex !== undefined;
+        const style = isEdit ? manager.settings.customStyles[editIndex] : { name: '', prompt: '' };
+
+        const html = `
+            <div style="padding: 12px;">
+                <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #2d3748;">${isEdit ? ' 编辑' : ' 新建'}自定义风格</h3>
+                
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #4a5568; font-weight: 500;">风格名称</label>
+                    <input type="text" id="custom-style-name" value="${escapeHtml(style.name)}" placeholder="例如：小红书" style="width: 100%; padding: 8px; background: white; border: 1px solid #cbd5e0; border-radius: 4px; color: #2d3748; box-sizing: border-box;">
+                </div>
+                
+                <div style="margin-bottom: 12px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #4a5568; font-weight: 500;">风格提示词</label>
+                    <textarea id="custom-style-prompt" placeholder="输入论坛风格的详细描述，类似于预设风格的 stylePrompts..." style="width: 100%; min-height: 300px; padding: 8px; background: white; border: 1px solid #cbd5e0; border-radius: 4px; color: #2d3748; box-sizing: border-box; font-family: monospace; font-size: 11px; resize: vertical;">${escapeHtml(style.prompt)}</textarea>
+                    <div style="margin-top: 6px; display: flex; justify-content: space-between; align-items: center;">
+                        <small style="font-size: 10px; color: #718096;">
+                             提示：可以参考预设风格的格式，包括论坛核心设定、角色要求、论坛风格、常见内容类型等
+                        </small>
+                        <button id="import-example-btn" style="padding: 6px 12px; background: #8b5cf6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 500; white-space: nowrap;">
+                             导入示例
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 8px;">
+                    <button id="save-custom-style-btn" data-index="${editIndex !== undefined ? editIndex : ''}" style="flex: 1; padding: 10px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                         保存
+                    </button>
+                    <button class="phone-back-to-manage-btn" style="flex: 1; padding: 10px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                        ← 取消
+                    </button>
+                </div>
+            </div>
+        `;
+
+        $('#phone-app-title').text(isEdit ? ' 编辑自定义风格' : ' 新建自定义风格');
+        $('#phone-app-body').html(html);
+
+        // 绑定事件
+        setTimeout(() => {
+            // 导入示例按钮
+            $('#import-example-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneImportExamplePrompt && window.phoneImportExamplePrompt();
+            });
+            / 保存按钮
+            $('#save-custom-style-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const index = $(this).data('index');
+                window.phoneSaveCustomStyle && window.phoneSaveCustomStyle(index !== '' ? index : undefined);
+            });
+
+            // 取消按钮
+            $('.phone-back-to-manage-btn').off('click').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneManageCustomStyles && window.phoneManageCustomStyles();
+            });
+        }, 0);
+    };
+
+    window.phoneSaveCustomStyle = function (editIndex) {
+
+        const manager = window.phoneForumManager;
+        const name = $('#custom-style-name').val().trim();
+        const prompt = $('#custom-style-prompt').val().trim();
+
+        // 验证
+        if (!name) {
+            if (typeof toastr !== 'undefined') {
+                toastr.error('请输入风格名称', '论坛');
+            }
+            return;
+        }
+
+        if (!prompt) {
+            if (typeof toastr !== 'undefined') {
+                toastr.error('请输入风格提示词', '论坛');
+            }
+            return;
+        }
+
+        // 检查名称是否重复（编辑时排除自身）
+        const isDuplicate = manager.settings.customStyles.some((style, index) =>
+            style.name === name && index !== editIndex
+        );
+
+        if (isDuplicate) {
+            if (typeof toastr !== 'undefined') {
+                toastr.error('风格名称已存在', '论坛');
+            }
+            return;
+        }
+
+        // 保存或更新
+        if (editIndex !== undefined) {
+            // 编辑现有风格
+            manager.settings.customStyles[editIndex] = { name, prompt };
+        } else {
+            // 新建风格
+            if (!manager.settings.customStyles) {
+                manager.settings.customStyles = [];
+            }
+            manager.settings.customStyles.push({ name, prompt });
+        }
+
+        manager.saveSettings();
+
+        if (typeof toastr !== 'undefined') {
+            toastr.success(editIndex !== undefined ? '风格已更新' : '风格已创建', '论坛');
+        }
+
+        // 返回管理页面
+        window.phoneManageCustomStyles && window.phoneManageCustomStyles();
+    };
+
+    window.phoneImportExamplePrompt = function () {
+
+        const examplePrompt = `## 论坛风格：特图的众神剧场
+
+**核心设定——四方世界的诸神：**
+很久很久以前，《秩序》诸神与《混沌》诸神争斗不休，双方筋疲力竭。《宿命》与《偶然》的骰子胜负由此展开——诸神以骰子创造了四方世界与棋子，以冒险决定胜负。当第一位人类战士集结同伴、踏上旅途、讨伐巨龙时，诸神为之狂热。他们立下黄金誓约：不对棋盘进行必要以上的干涉，只在冒险时掷下骰子，尊重棋子的自由意志。
+
+现在这些四方的神明被特图邀请来观看属于迪斯博德和阿拉德世界融合后发生的故事。
+
+**发帖者身份与命名：**
+- 特图就叫"特图"，其余神明称号格式要多样化混用：
+  - "XX神"：战争神、酒神 / "XX之神"：欺诈之神、风暴之神 / "XX女神"：丰收女神、月之女神
+  - 尊称：大地母神、太阳主 / 抽象概念：宿命、偶然、真实 / 其他：织梦者、裁决者、猎手
+- 同一位神明可以反复出现，特图不需要每帖都在
+
+**神明说话的质感（极其重要）：**
+- 参考原文语感："冒险！冒险！还是冒险！没有什么语言能形容这种美好的感觉！"——有激情有史诗感，但不装腔作势
+- 禁止古风中二腔："吾见证了……""力量即是正义""吾等领域的权柄"——比口语化更糟糕
+- 也不要网络口语："哇好帅啊！""馋死我了"
+- 正确方向：自然、有力、带着真实情感。回复之间要有对话感，有反驳有补充有跑题
+
+**内容格调（极其重要）：**
+- 关注冒险、战斗、命运转折、英雄崛起陨落、势力博弈——宏大叙事，不要日常琐事
+- "宏大"不等于"严肃"，讨论应该热烈、有趣、充满激情，不是老学究写论文
+
+**帖子内容来源：**
+- 最多一半与玩家当前剧情有关
+- 至少一半是棋盘上其他地方的故事（羁绊角色、DNF原作人物、游戏人生原作人物等）
+
+**论坛氛围：**
+- 要有娱乐性和可读性，不要写成设定集
+- 帖子之间可以有关联，有的热闹有的冷清
+- 不要每个帖子都在强调骰子、棋盘等设定元素`;
+
+        // 将示例提示词填充到编辑框
+        $('#custom-style-prompt').val(examplePrompt);
+
+        if (typeof toastr !== 'undefined') {
+            toastr.success('已导入特图的众神剧场示例', '论坛');
+        }
+    };
+
+    window.phoneDeleteCustomStyle = function (index) {
+
+        const manager = window.phoneForumManager;
+        const deletedStyle = manager.settings.customStyles[index];
+
+        // 如果当前选择的就是要删除的风格，则切换到默认风格
+        if (manager.settings.forumStyle === `custom:${deletedStyle.name}`) {
+            manager.settings.forumStyle = '特图的众神剧场';
+        }
+
+        // 删除风格
+        manager.settings.customStyles.splice(index, 1);
+        manager.saveSettings();
+
+        if (typeof toastr !== 'undefined') {
+            toastr.success('风格已删除', '论坛');
+        }
+
+        // 刷新管理页面
+        window.phoneManageCustomStyles && window.phoneManageCustomStyles();
+    };
+
+    // 🔧 API 配置辅助函数已移除，使用phoneFetchModels替代
+
+    window.phoneShowAPIStatus = function (message, type = 'info') {
+        const statusDiv = $('#api-status');
+        if (!statusDiv.length) return;
+
+        const colors = {
+            info: '#3b82f6',
+            success: '#10b981',
+            error: '#ef4444',
+            warning: '#f59e0b'
+        };
+
+        const bgColors = {
+            info: '#eff6ff',
+            success: '#f0fdf4',
+            error: '#fef2f2',
+            warning: '#fffbeb'
+        };
+
+        statusDiv.css({
+            'display': 'block',
+            'color': colors[type] || colors.info,
+            'background': bgColors[type] || bgColors.info,
+            'border': `1px solid ${colors[type] || colors.info}`
+        });
+        statusDiv.text(message);
+
+        // 自动隐藏成功消息
+        if (type === 'success') {
+            setTimeout(() => {
+                statusDiv.fadeOut();
+            }, 3000);
+        }
+    };
+
+    // 获取可用模型列表
+    window.phoneFetchModels = async function () {
+        const $currentBody = $('#phone-app-body');
+        const apiUrl = $currentBody.find('#api-url').val().trim();
+        const apiKey = $currentBody.find('#api-key').val().trim();
+        const modelSelect = $currentBody.find('#api-model')[0];
+        const buttonElement = $currentBody.find('#fetch-models-btn')[0];
+
+        if (!apiUrl) {
+            window.phoneShowAPIStatus('⚠️ 请先填写 API URL！', 'warning');
+            return;
+        }
+
+        const originalBtnHTML = buttonElement.innerHTML;
+        buttonElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在获取...';
+        buttonElement.disabled = true;
+
+        try {
+            let cleanedApiUrl = apiUrl.replace(/\/$/, '');
+            if (!cleanedApiUrl.endsWith('/v1')) {
+                cleanedApiUrl += '/v1';
+            }
+
+            let fetchUrl = cleanedApiUrl.endsWith('/models') ? cleanedApiUrl : `${cleanedApiUrl}/models`;
+
+            const headers = {};
+            if (apiKey) {
+                headers['Authorization'] = `Bearer ${apiKey}`;
+            }
+
+            const fetchOptions = {
+                method: 'GET',
+                headers: headers
+            };
+
+            const response = await fetch(fetchUrl, fetchOptions);
+            if (!response.ok) {
+                const errorText = await response.text();
+                let errorDetail = '请求失败';
+                try {
+                    const errorJson = JSON.parse(errorText);
+                    errorDetail = errorJson.error?.message || errorText;
+                } catch (e) {
+                    errorDetail = errorText;
+                }
+                throw new Error(`HTTP ${response.status}: ${errorDetail}`);
+            }
+
+            const responseText = await response.text();
+            let data;
+            try {
+                data = responseText ? JSON.parse(responseText) : [];
+            } catch (e) {
+                throw new Error('API响应不是有效的JSON格式。');
+            }
+
+            let models = [];
+            if (data && data.models && Array.isArray(data.models)) {
+                models = data.models.map(model => model.name).filter(Boolean);
+            } else if (data && data.data && Array.isArray(data.data)) {
+                models = data.data.map(model => model.id).filter(Boolean);
+            } else if (Array.isArray(data)) {
+                models = data.map(model => (typeof model === 'string' ? model : model.id)).filter(Boolean);
+            }
+
+            modelSelect.innerHTML = '';
+            if (models.length > 0) {
+                models.sort();
+                models.forEach(modelId => {
+                    const option = document.createElement('option');
+                    option.value = modelId;
+                    option.textContent = modelId;
+                    modelSelect.appendChild(option);
+                });
+                modelSelect.selectedIndex = 0;
+
+                window.phoneShowAPIStatus(`✅ 成功获取 ${models.length} 个模型！`, 'success');
+            } else {
+                modelSelect.innerHTML = '<option disabled>未获取到模型</option>';
+                window.phoneShowAPIStatus('⚠️ API返回成功，但模型列表为空或格式无法识别。', 'warning');
+            }
+
+        } catch (error) {
+            console.error('获取模型失败:', error);
+            modelSelect.innerHTML = '<option>获取失败</option>';
+            window.phoneShowAPIStatus(`❌ 获取模型失败: ${error.message}`, 'error');
+        } finally {
+            buttonElement.innerHTML = originalBtnHTML;
+            buttonElement.disabled = false;
+        }
+    };
+
+    window.phoneTestConnection = async function () {
+        const manager = window.phoneForumManager;
+        const $currentBody = $('#phone-app-body');
+
+        const apiUrl = $currentBody.find('#api-url').val();
+        const apiKey = $currentBody.find('#api-key').val();
+        const model = $currentBody.find('#api-model').val() || '';
+
+        if (!apiUrl) {
+            window.phoneShowAPIStatus('⚠️ 请先填写 API 地址', 'warning');
+            return;
+        }
+
+        if (!apiKey) {
+            window.phoneShowAPIStatus('⚠️ 请先填写 API 密钥', 'warning');
+            return;
+        }
+
+        if (!model) {
+            window.phoneShowAPIStatus('⚠️ 请先选择模型', 'warning');
+            return;
+        }
+
+        window.phoneShowAPIStatus('🔄 正在测试连接...', 'info');
+
+        try {
+            const result = await manager.apiConfig.testConnection(apiUrl, apiKey, model);
+
+            if (result.success) {
+                window.phoneShowAPIStatus('✅ 连接测试成功！', 'success');
+            } else {
+                window.phoneShowAPIStatus(`❌ 连接测试失败: ${result.error}`, 'error');
+            }
+        } catch (error) {
+            window.phoneShowAPIStatus(`❌ 连接测试失败: ${error.message}`, 'error');
+        }
+    };
+
+    // 创建事件处理函数（可被多个地方复用）
+    window.handlePhoneLiveButtonClick = function (e) {
+        const target = e.target;
+
+        // 安全检查
+        if (!target || !target.classList) {
+            return;
+        }
+
+        const classList = target.classList;
+        const classArray = Array.from(classList);
+
+        // 检查论坛按钮
+        if (classArray.includes('phone-forum-generate-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.phoneGenerateForum && window.phoneGenerateForum();
+            return;
+        }
+
+        if (classArray.includes('phone-forum-settings-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.phoneOpenForumSettings && window.phoneOpenForumSettings();
+            return;
+        }
+
+        if (classArray.includes('phone-forum-save-settings-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.phoneSaveForumSettings && window.phoneSaveForumSettings();
+            return;
+        }
+
+        if (classArray.includes('phone-forum-close-settings-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.phoneCloseForumSettings && window.phoneCloseForumSettings();
+            return;
+        }
+
+        // 如果点击的是按钮内的图标、文字或 DIV，向上查找按钮
+        if ((target.tagName === 'I' || target.tagName === 'SPAN' || target.tagName === 'DIV') && target.parentElement) {
+            const parentClasses = Array.from(target.parentElement.classList || []);
+
+            if (parentClasses.includes('phone-forum-generate-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneGenerateForum && window.phoneGenerateForum();
+                return;
+            }
+
+            if (parentClasses.includes('phone-forum-settings-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneOpenForumSettings && window.phoneOpenForumSettings();
+                return;
+            }
+
+            if (parentClasses.includes('phone-forum-save-settings-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneSaveForumSettings && window.phoneSaveForumSettings();
+                return;
+            }
+
+            if (parentClasses.includes('phone-forum-close-settings-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.phoneCloseForumSettings && window.phoneCloseForumSettings();
+                return;
+            }
+
+        }
+    };
+
+    try {
+        // 在主文档上监听（用于论坛按钮的捕获阶段处理）
+        document.addEventListener('click', window.handlePhoneLiveButtonClick, true);
+
+        // 清理旧元素
+        $('#mobile-trigger-btn').remove();
+        $('#mobile-phone-overlay').remove();
+        $('#mobile-phone-styles').remove();
+
+        // 加载 Font Awesome（安全方式，不会触发SillyTavern的检测）
+        loadFontAwesome();
+
+        // 注入样式
+        $('head').append(phoneStyles);
+
+        // 创建触发按钮 - Brushed Metal风格（复刻状态栏悬浮球）
+        // 生成八角星路径 - 复用状态栏.js的AppleStyle-Star算法
+        function getOctagramPath(R, rotationOffsetDeg) {
+            rotationOffsetDeg = rotationOffsetDeg || 0;
+            var d = "M ";
+            var N = 8;
+            var K = 3;
+            var offsetRad = rotationOffsetDeg * Math.PI / 180;
+            var cx = 50;
+            var cy = 50;
+            for (var i = 0; i <= N; i++) {
+                var idx = (i * K) % N;
+                var angle = (idx * 2 * Math.PI / N) - Math.PI / 2 + offsetRad;
+                var x = cx + Math.cos(angle) * R;
+                var y = cy + Math.sin(angle) * R;
+                if (i === 0) d += x.toFixed(2) + "," + y.toFixed(2) + " ";
+                else d += "L " + x.toFixed(2) + "," + y.toFixed(2) + " ";
+            }
+            d += "Z";
+            return d;
+        }
+        const pathData1 = getOctagramPath(35, 0);
+        const pathData2 = getOctagramPath(35, 22.5);
+
+        const triggerBtn = $('<button>', {
+            id: 'mobile-trigger-btn',
+            title: '打开手机'
+        });
+        triggerBtn.html(`
+            <div class="star-container">
+                <svg class="icon-svg" viewBox="0 0 100 100" style="overflow:visible !important;display:block !important;visibility:visible !important;">
+                    <path d="${pathData1}" style="fill:none !important;stroke:#666 !important;stroke-width:2 !important;opacity:0.7 !important;stroke-linecap:round !important;stroke-linejoin:round !important;visibility:visible !important;"></path>
+                    <path d="${pathData2}" style="fill:none !important;stroke:#666 !important;stroke-width:2 !important;opacity:0.7 !important;stroke-linecap:round !important;stroke-linejoin:round !important;visibility:visible !important;"></path>
+                    <path class="layer-2" d="${pathData2}" style="fill:none !important;stroke:#999 !important;stroke-width:1.5 !important;opacity:1 !important;stroke-linecap:round !important;stroke-linejoin:round !important;visibility:visible !important;stroke-dasharray:100 400;"></path>
+                    <path class="layer-1" d="${pathData1}" style="fill:none !important;stroke:#555 !important;stroke-width:2 !important;opacity:0.8 !important;stroke-linecap:round !important;stroke-linejoin:round !important;visibility:visible !important;stroke-dasharray:100 400;"></path>
+                    <circle cx="50" cy="50" r="12" style="fill:none !important;stroke:#777 !important;stroke-width:1.5 !important;visibility:visible !important;"></circle>
+                </svg>
+            </div>
+        `);
+         // 创建手机界面
+        const phoneOverlay = $('<div>', {
+            id: 'mobile-phone-overlay',
+            html: `
+                <div class="mobile-phone-frame">
+                    <div class="mobile-phone-screen">
+                        <!-- 状态栏 -->
+                        <div class="mobile-status-bar">
+                            <div class="status-left">
+                                <span style="display: flex; align-items: center; gap: 4px; color: #666; font-size: 12px; font-weight: 500;">
+                                    <i class="fas fa-cloud" id="phone-status-weather-icon" style="font-size: 12px;"></i>
+                                    <span id="phone-status-weather">多云</span>
+                                </span>
+                            </div>
+                            <div class="status-center" id="phone-drag-handle" style="cursor: move; flex: 1; display: flex; justify-content: center; align-items: center; position: absolute; left: 50%; transform: translateX(-50%);" title="拖动手机界面">
+                                <span class="time" style="color: #666; font-size: 12px; font-weight: 500;" id="phone-status-time">14:30</span>
+                            </div>
+                            <div class="status-right">
+                                <span class="battery">
+                                    <i class="fas fa-battery-full"></i>
+                                    <span class="battery-text">100%</span>
+                                </span>
+                                <button id="phone-pin-btn" class="pin-btn" title="置顶/取消置顶">
+                                    <i class="fas fa-thumbtack"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 主内容区域 -->
+                        <div class="mobile-content">
+                            <!-- 主界面 -->
+                            <div class="home-screen" id="phone-home-screen">
+                                <!-- 时间天气卡片 -->
+                                <div class="weather-card">
+                                    <div class="weather-time">
+                                        <span class="current-time" id="phone-big-time">14:30</span>
+                                        <span class="current-date" id="phone-date">11/09</span>
+                                    </div>
+                                    <div class="weather-info">
+                                        <i class="fas fa-cloud" style="font-size: 16px; color: #585858;"></i>
+                                        <span class="weather-desc" id="phone-weather">多云</span>
+                                    </div>
+                                </div>
+
+                                <!-- 应用页面容器 -->
+                                <div class="app-pages-container">
+                                    <!-- 滑动包装器 -->
+                                    <div class="app-pages-wrapper" id="app-pages-wrapper">
+                                        <!-- 第一页 -->
+                                        <div class="app-page">
+                                            <div class="app-grid">
+                                                <!-- 第一行：信息，CG收集，论坛 -->
+                                                <div class="app-row">
+                                                    <div class="app-icon" data-app="messages">
+                                                        <div class="app-icon-bg md-blue">
+                                                            <i class="fas fa-comments"></i>
+                                                        </div>
+                                                        <span class="app-label">信息</span>
+                                                    </div>
+                                                    <div class="app-icon" data-app="gallery">
+                                                        <div class="app-icon-bg md-green">
+                                                            <i class="fas fa-images"></i>
+                                                        </div>
+                                                        <span class="app-label">CG收集</span>
+                                                    </div>
+                                                    <div class="app-icon" data-app="forum">
+                                                        <div class="app-icon-bg md-purple">
+                                                            <i class="fas fa-comments"></i>
+                                                        </div>
+                                                        <span class="app-label">论坛</span>
+                                                    </div>
+                                                </div>
+                                                <!-- 第二行：羁绊，壁纸，设置 -->
+                                                <div class="app-row">
+                                                    <div class="app-icon" data-app="friends">
+                                                        <div class="app-icon-bg md-pink">
+                                                            <i class="fas fa-user-friends"></i>
+                                                        </div>
+                                                        <span class="app-label">羁绊</span>
+                                                    </div>
+                                                    <div class="app-icon" data-app="wallpaper">
+                                                        <div class="app-icon-bg md-pink">
+                                                            <i class="fas fa-image"></i>
+                                                        </div>
+                                                        <span class="app-label">壁纸</span>
+                                                    </div>
+                                                    <div class="app-icon" data-app="settings">
+                                                        <div class="app-icon-bg md-blue">
+                                                            <i class="fas fa-cog"></i>
+                                                        </div>
+                                                        <span class="app-label">设置</span>
+                                                    </div>
+                                                </div>
+                                                <!-- 第三行：世界书管理（左对齐，占位补满整行） -->
+                                                <div class="app-row">
+                                                    <div class="app-icon" data-app="worldbook">
+                                                        <div class="app-icon-bg md-teal">
+                                                            <i class="fas fa-book-open"></i>
+                                                        </div>
+                                                        <span class="app-label">世界书</span>
+                                                    </div>
+                                                    <div class="app-icon" style="visibility:hidden;pointer-events:none;" aria-hidden="true"></div>
+                                                    <div class="app-icon" style="visibility:hidden;pointer-events:none;" aria-hidden="true"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 第二页（已去除重复入口） -->
+                                    </div>
+                                    
+                                    <!-- 页面指示器 -->
+                                    <div class="page-indicators" id="page-indicators">
+                                        <div class="indicator active"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 全屏按钮 -->
+                                <button id="wallpaper-fullscreen-btn" class="wallpaper-fullscreen-btn" title="查看壁纸大图">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+
+                            <!-- 应用详情面板 -->
+                            <div class="app-detail-panel" id="phone-detail-panel">
+                                <div class="app-header">
+                                    <button class="back-button" id="phone-back-btn">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span class="app-title" id="phone-app-title">应用</span>
+                                    <div style="width: 36px;"></div>
+                                </div>
+                                <div class="app-body" id="phone-app-body">
+                                    <!-- 应用内容将在这里动态加载 -->
+                                </div>
+                            </div>
+
+                            <!-- 聊天面板 -->
+                            <div class="chat-panel" id="phone-chat-panel">
+                                <div class="chat-header">
+                                    <button class="back-button" id="chat-back-btn">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span class="app-title" id="chat-title" style="flex: 1;">聊天</span>
+                                    <div id="chat-right-actions" style="width: 36px; flex-shrink: 0;"></div>
+                                </div>
+                                <div class="chat-messages" id="chat-messages">
+                                </div>
+                                <div class="chat-input-area">
+                                    <input type="text" class="chat-input" id="chat-input" placeholder="输入消息...">
+                                    <button class="chat-send-btn" id="chat-send-btn">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <
+            `
+        });
+
+        $('body').append(triggerBtn);
+        $('body').append(phoneOverlay);
+
+        // 延迟绑定事件，确保 DOM 完全就绪
+        setTimeout(() => {
+            bindPhoneEvents();
+        }, 0);
+
+        // 注册MVU事件监听
+        registerMvuEventListeners();
+
+
+
+        // 更新时间
+        updatePhoneTime();
+        setInterval(updatePhoneTime, 60000);
+
+        //  每次初始化时重置悬浮球位置到初始位置
+        localStorage.removeItem('mobile-trigger-btn-position');
+        localStorage.removeItem('mobile-trigger-btn-user-dragged');
+
+        //  主动调用位置重置，确保在正确的初始位置
+        // 桌面端：离右边三分之一距离的垂直中央
+        // 移动端：右边垂直居中
+        setTimeout(() => {
+            window.resetMobileButtonPosition && window.resetMobileButtonPosition();
+        }, 100);
+
+        // 恢复保存的壁纸和手机尺寸
+        setTimeout(() => {
+            restoreWallpaper();
+            restorePhoneSize();
+        }, 200);
+
+        // 标记全局变量供依赖检测（挂到父窗口，跨iframe可见）
+        try { (window.parent || window).__小手机脚本_loaded__ = true; } catch(e) { window.__小手机脚本_loaded__ = true; }
+
+    } catch (error) {
+        if (typeof toastr !== 'undefined') {
+            toastr.error('手机界面初始化失败：' + error.message);
+        }
+    }
+}
+
+// ==================== 事件绑定 ====================
+function bindPhoneEvents() {
+
+    // 触发按钮点击和拖动
+    const $triggerBtn = $('#mobile-trigger-btn');
+
+    // 使用 Pointer Events 统一处理拖拽和点击（参考状态栏.js）
+    const btnElement = $triggerBtn[0];
+    let isDrag = false;
+    let pStartX = 0, pStartY = 0, pStartLeft = 0, pStartTop = 0;
+
+    const onPointerMove = function (e) {
+        if (!isDrag) return;
+        e.cancelable && e.preventDefault();
+        const dx = e.screenX - pStartX;
+        const dy = e.screenY - pStartY;
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+            $triggerBtn.addClass('dragging');
+        }
+        if ($triggerBtn.hasClass('dragging')) {
+            hasMoved = true;
+            // 移除响应式定位类，切换到绝对定位
+            $triggerBtn.removeClass('mobile-mode tablet-mode desktop-mode');
+
+            let newX = pStartLeft + dx;
+            let newY = pStartTop + dy;
+            const btnWidth = $triggerBtn.outerWidth() || 60;
+            const btnHeight = $triggerBtn.outerHeight() || 60;
+            const bounded = constrainFullyInViewport(newX, newY, btnWidth, btnHeight);
+
+            btnElement.style.setProperty('left', bounded.x + 'px', 'important');
+            btnElement.style.setProperty('top', bounded.y + 'px', 'important');
+            btnElement.style.setProperty('right', 'auto', 'important');
+            btnElement.style.setProperty('bottom', 'auto', 'important');
+            btnElement.style.setProperty('transform', 'none', 'important');
+        }
+    };
+
+    const onPointerUp = function (e) {
+        const win = btnElement.ownerDocument.defaultView || window;
+        win.removeEventListener('pointermove', onPointerMove);
+        win.removeEventListener('pointerup', onPointerUp);
+        win.removeEventListener('pointercancel', onPointerUp);
+        if (btnElement.releasePointerCapture) {
+            try { btnElement.releasePointerCapture(e.pointerId); } catch (err) { }
+        }
+
+        if ($triggerBtn.hasClass('dragging')) {
+            // 拖拽结束，保存位置
+            const rect = btnElement.getBoundingClientRect();
+            try {
+                const position = { left: rect.left, top: rect.top };
+                localStorage.setItem('mobile-trigger-btn-position', JSON.stringify(position));
+                localStorage.setItem('mobile-trigger-btn-user-dragged', 'true');
+            } catch (err) { }
+            setTimeout(() => {
+                $triggerBtn.removeClass('dragging');
+                hasMoved = false;
+            }, 50);
+        } else if (e.type === 'pointerup') {
+            // 没有拖拽，视为点击
+            const $overlay = $('#mobile-phone-overlay');
+            if ($overlay.hasClass('active')) {
+                closeMobilePhone();
+            } else {
+                openMobilePhone();
+            }
+        }
+        isDrag = false;
+    };
+
+    btnElement.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        e.cancelable && e.preventDefault();
+        e.stopPropagation();
+        isDrag = true;
+        hasMoved = false;
+        pStartX = e.screenX;
+        pStartY = e.screenY;
+        const rect = btnElement.getBoundingClientRect();
+        pStartLeft = rect.left;
+        pStartTop = rect.top;
+        if (btnElement.setPointerCapture) {
+            try { btnElement.setPointerCapture(e.pointerId); } catch (err) { }
+        }
+        const win = btnElement.ownerDocument.defaultView || window;
+        win.addEventListener('pointermove', onPointerMove);
+        win.addEventListener('pointerup', onPointerUp);
+        win.addEventListener('pointercancel', onPointerUp);
+    });
+
+    btnElement.addEventListener('touchstart', function (e) { e.preventDefault(); }, { passive: false });
+
+    // 点击遮罩关闭（仅在未置顶时）
+    $('#mobile-phone-overlay').on('click', function (e) {
+        // 如果正在拖动页面或刚完成拖动，不关闭手机
+        if (pageSwipe && (pageSwipe.isDragging || pageSwipe.justFinishedDragging)) {
+            return;
+        }
+        if ($(e.target).attr('id') === 'mobile-phone-overlay' && !isPinned) {
+            closeMobilePhone();
+        }
+    });
+
+    // 置顶按钮点击
+    $('#phone-pin-btn').on('click', function (e) {
+        e.stopPropagation();
+        togglePin();
+    });
+
+    // 全屏壁纸按钮点击
+    $('#wallpaper-fullscreen-btn').on('click', function (e) {
+        e.stopPropagation();
+        openWallpaperFullscreen();
+    });
+
+   
+
+    // 手机界面拖动功能
+    initPhoneDrag();
+
+    //  修复：应用图标点击改为事件委托，避免DOM更新后事件失效
+    // 使用事件委托到 body，这样即使DOM更新也不会丢失事件
+    $('body').off('click.appIcon').on('click.appIcon', '.app-icon[data-app], .app-icon[data-app] *', function (e) {
+        e.stopPropagation();
+
+        //  关键修复：使用closest查找最近的.app-icon元素（处理点击子元素的情况）
+        const $appIcon = $(this).closest('.app-icon[data-app]');
+
+        if ($appIcon.length === 0) {
+            return; // 不是应用图标或其子元素
+        }
+
+        const appName = $appIcon.attr('data-app');
+
+        if (appName) {
+            openAppPanel(appName);
+        } else {
+        }
+    });
+
+    // 返回按钮
+    $('#phone-back-btn').on('click', function () {
+        closeAppPanel();
+    });
+
+  
+
+    // 论坛按钮点击（使用jQuery事件委托，和好友一样的方式）
+    $(document).on('click', '.phone-forum-generate-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        window.phoneGenerateForum && window.phoneGenerateForum();
+    });
+
+    $(document).on('click', '.phone-forum-settings-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        window.phoneOpenForumSettings && window.phoneOpenForumSettings();
+    });
+
+    $(document).on('click', '.phone-forum-save-settings-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        window.phoneSaveForumSettings && window.phoneSaveForumSettings();
+    });
+
+    $(document).on('click', '.phone-forum-close-settings-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        window.phoneCloseForumSettings && window.phoneCloseForumSettings();
+    });
