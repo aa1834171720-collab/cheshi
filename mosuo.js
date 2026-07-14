@@ -984,3 +984,736 @@ body #mobile-trigger-btn.tablet-mode {
     animation: spin 0.8s linear infinite;
     z-index: 10;
 }
+/* ==================== 响应式适配 - 教科书级实现 ==================== */
+/* 大屏手机适配 (≤480px) */
+@media (max-width: 480px) {
+    /* 框架适配 */
+    .mobile-phone-frame,
+    #mobile-phone-overlay .mobile-phone-frame {
+        width: 90% !important;
+        max-width: 100% !important;
+        border-radius: 30px !important;
+        padding: 6px !important;
+    }
+    
+    #mobile-phone-overlay .mobile-phone-screen {
+        border-radius: 24px !important;
+    }
+    
+    /* 触发按钮 */
+    #mobile-trigger-btn {
+        width: 45px;
+        height: 45px;
+        bottom: 12px;
+        right: 12px;
+    }
+    
+    /* 状态栏 */
+    .mobile-status-bar {
+        height: 36px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+    
+    .status-left .time {
+        font-size: 13px;
+    }
+    
+    /* 应用 Header */
+    .app-header {
+        height: 44px;
+        padding: 0 12px;
+    }
+    
+    .app-title {
+        font-size: 16px;
+    }
+    
+    .back-button,
+    .pin-btn {
+        font-size: 18px;
+        padding: 4px;
+    }
+    
+    /* 主屏幕 */
+    .home-screen {
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    /* 天气卡片 */
+    .weather-card {
+        padding: 12px;
+        gap: 10px;
+        border-radius: 15px;
+    }
+    
+    .weather-time {
+        font-size: 22px;
+    }
+    
+    .weather-date {
+        font-size: 12px;
+    }
+    
+    .weather-location {
+        font-size: 11px;
+    }
+    
+    /* 应用图标 */
+    .app-icon {
+        gap: 5px;
+    }
+    
+    .app-icon-bg {
+        width: 46px;
+        height: 46px;
+        font-size: 23px;
+        border-radius: 12px;
+    }
+    
+    .app-label {
+        font-size: 10px;
+    }
+    
+    /* 应用网格 */
+    .app-grid {
+        gap: 12px;
+    }
+    
+    .app-row {
+        gap: 15px;
+    }
+    
+    /* 应用内容 */
+    .app-body {
+        padding: 12px;
+    }
+    
+    /* 列表项 */
+    .list-item {
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .list-item-name {
+        font-size: 13px;
+    }
+    
+    .list-item-value {
+        font-size: 14px;
+    }
+    
+    .list-item-desc {
+        font-size: 11px;
+    }
+    
+    /* 消息列表 */
+    .message-item {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    .message-avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+    
+    .message-name {
+        font-size: 13px;
+    }
+    
+    .message-preview {
+        font-size: 11px;
+    }
+    
+    .message-time {
+        font-size: 10px;
+    }
+    
+    /* 聊天界面 */
+    .chat-messages {
+        gap: 12px;
+        padding: 10px;
+    }
+    
+    .chat-bubble {
+        font-size: 13px;
+        padding: 9px 13px;
+        border-radius: 16px;
+    }
+    
+    .chat-time {
+        font-size: 10px;
+    }
+    
+    .chat-input-container {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+    
+    .chat-input {
+        font-size: 13px;
+        padding: 8px 12px;
+        border-radius: 20px;
+    }
+    
+    .send-button {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+    }
+    
+    /* 商品卡片 */
+    .shop-grid {
+        gap: 10px;
+    }
+    
+    .shop-item {
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .shop-item-name {
+        font-size: 13px;
+    }
+    
+    .shop-item-desc {
+        font-size: 11px;
+    }
+    
+    .shop-item-price {
+        font-size: 14px;
+    }
+    
+    .shop-buy-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    
+    /* 好友卡片 */
+    .friends-grid {
+        gap: 10px;
+    }
+    
+    .friend-card {
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .friend-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .friend-name {
+        font-size: 14px;
+    }
+    
+    .friend-identity {
+        font-size: 11px;
+    }
+    
+    .friend-stats {
+        font-size: 10px;
+    }
+    
+    .friend-stat-value {
+        font-size: 13px;
+    }
+    
+    /* 已移除资产相关样式 */
+    
+    .asset-item {
+        padding: 10px;
+    }
+    
+    .asset-label {
+        font-size: 12px;
+    }
+    
+    .asset-value {
+        font-size: 14px;
+    }
+    
+    /* 空状态 */
+    .empty-state {
+        padding: 40px 20px;
+    }
+    
+    .empty-icon {
+        font-size: 40px;
+    }
+    
+    .empty-text {
+        font-size: 13px;
+    }
+}
+
+/* 小屏手机适配 (≤360px) */
+@media (max-width: 360px) {
+    /* 框架适配 */
+    .mobile-phone-frame,
+    #mobile-phone-overlay .mobile-phone-frame {
+        width: 95% !important;
+        border-radius: 25px !important;
+        padding: 5px !important;
+    }
+    
+    #mobile-phone-overlay .mobile-phone-screen {
+        border-radius: 20px !important;
+    }
+    
+    /* 触发按钮 */
+    #mobile-trigger-btn {
+        width: 40px;
+        height: 40px;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    /* 状态栏 */
+    .mobile-status-bar {
+        height: 34px;
+        padding: 0 8px;
+        font-size: 11px;
+    }
+    
+    /* 应用 Header */
+    .app-header {
+        height: 40px;
+        padding: 0 10px;
+    }
+    
+    .app-title {
+        font-size: 15px;
+    }
+    
+    .back-button,
+    .pin-btn {
+        font-size: 16px;
+        padding: 3px;
+    }
+    
+    /* 主屏幕 */
+    .home-screen {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    /* 天气卡片 */
+    .weather-card {
+        padding: 10px;
+    }
+    
+    .weather-time {
+        font-size: 20px;
+    }
+    
+    .weather-date {
+        font-size: 11px;
+    }
+    
+    /* 应用图标 */
+    .app-icon-bg {
+        width: 42px;
+        height: 42px;
+        font-size: 21px;
+        border-radius: 10px;
+    }
+    
+    .app-label {
+        font-size: 9px;
+    }
+    
+    .app-grid {
+        gap: 10px;
+    }
+    
+    .app-row {
+        gap: 12px;
+    }
+    
+    /* 应用内容 */
+    .app-body {
+        padding: 10px;
+    }
+    
+    /* 列表项 */
+    .list-item-name {
+        font-size: 12px;
+    }
+    
+    .list-item-value {
+        font-size: 13px;
+    }
+    
+    /* 聊天 */
+    .chat-bubble {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .chat-input {
+        font-size: 12px;
+        padding: 7px 10px;
+    }
+    
+    .send-button {
+        width: 34px;
+        height: 34px;
+    }
+    
+    /* 好友头像 */
+    .friend-avatar,
+    .message-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+}
+
+/* 触控优化 - 所有触摸设备 */
+@media (hover: none) and (pointer: coarse) {
+    /* 确保最小触控区域 44px (Apple HIG 标准) */
+    .app-icon,
+    .back-button,
+    .send-button,
+    .shop-buy-btn,
+    button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    /* 增加间距防止误触 */
+    .app-row {
+        gap: 20px;
+    }
+    
+    /* 增强触控反馈 */
+    .app-icon:active {
+        transform: scale(0.85);
+    }
+    
+    .list-item:active,
+    .message-item:active,
+    .friend-card:active {
+        transform: scale(0.98);
+    }
+}
+
+/* 横屏优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .mobile-phone-frame,
+    #mobile-phone-overlay .mobile-phone-frame {
+        width: 50% !important;
+        max-width: 500px !important;
+    }
+    
+    .home-screen,
+    .app-body {
+        padding: 10px;
+    }
+    
+    .app-grid {
+        gap: 10px;
+    }
+}
+
+/* ==================== 滚动条 ==================== */
+.home-screen::-webkit-scrollbar,
+.app-body::-webkit-scrollbar {
+    width: 4px;
+}
+
+.home-screen::-webkit-scrollbar-track,
+.app-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.home-screen::-webkit-scrollbar-thumb,
+.app-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+}
+
+.home-screen::-webkit-scrollbar-thumb:hover,
+.app-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+// 导航栈，用于处理多级页面
+let navigationStack = [];
+
+//  好友列表导航记忆
+let friendsListScrollPosition = 0; // 好友列表滚动位置
+let lastViewedFriend = null; // 最后查看的好友名称
+let friendDetailScrollPosition = 0; //  好友详情页的滚动位置
+
+/**
+ * 判断对象中是否存在有效的联系人项
+ */
+function hasContactEntries(obj) {
+    if (!obj || typeof obj !== 'object') return false;
+    return Object.keys(obj).length > 0;
+}
+
+/**
+ * 获取当前可用的联系人数据源（使用变量脚本的羁绊列表）
+ */
+function getRelationshipDataSource(source = currentPhoneData) {
+    /* 优先从传入的source获取羁绊列表 */
+    if (source && hasContactEntries(source.羁绊列表)) {
+        return source.羁绊列表;
+    }
+
+    /* 优先复用统一的最新MVU取数逻辑，兼容 chat / message / 旧版变量接口 */
+    if (typeof fetchLatestMvuData === 'function') {
+        try {
+            const latestGameData = fetchLatestMvuData(false);
+            if (latestGameData && hasContactEntries(latestGameData.羁绊列表)) {
+                return latestGameData.羁绊列表;
+            }
+        } catch (e) {
+            console.warn('[手机状态栏] 统一MVU取数获取羁绊列表失败:', e);
+        }
+    }
+
+    /* 降级：尝试从MVU变量框架获取羁绊列表数据 */
+    if (typeof Mvu !== 'undefined' && Mvu.getMvuData) {
+        try {
+            /* 尝试从最新消息获取，使用extractMvuGameData提取数据 */
+            const mvuData = Mvu.getMvuData({ type: 'message', message_id: 'latest' });
+            const gameData = extractMvuGameData(mvuData);
+            if (gameData && hasContactEntries(gameData.羁绊列表)) {
+                return gameData.羁绊列表;
+            }
+            /* 尝试从chat级别获取 */
+            const chatData = Mvu.getMvuData({ type: 'chat' });
+            const chatGameData = extractMvuGameData(chatData);
+            if (chatGameData && hasContactEntries(chatGameData.羁绊列表)) {
+                return chatGameData.羁绊列表;
+            }
+        } catch (e) {
+            console.error('[手机状态栏] MVU获取羁绊列表失败:', e);
+        }
+    }
+    return null;
+}
+
+/**
+ * 获取联系人的有效键列表
+ */
+function getRelationshipKeys(collection) {
+    if (!collection) return [];
+    return Object.keys(collection);
+}
+
+
+
+//  实时刷新相关变量
+let messageEventListener = null;
+let lastMessageCount = 0;
+let isEventListening = false;
+let refreshPollingInterval = null;
+
+// ==================== 边界限制工具函数 ====================
+// clamp 函数：将值限制在 min 和 max 之间
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
+// 获取可靠的视口尺寸（支持 iframe 和各种环境）
+function getViewportSize() {
+    // 优先使用 visualViewport（更准确，支持缩放）
+    if (window.visualViewport) {
+        const vv = window.visualViewport;
+        if (vv.width > 0 && vv.height > 0) {
+            return { width: vv.width, height: vv.height };
+        }
+    }
+
+    // 回退到 innerWidth/innerHeight
+    let w = window.innerWidth || document.documentElement.clientWidth || 0;
+    let h = window.innerHeight || document.documentElement.clientHeight || 0;
+
+    // iframe 中尝试父窗口
+    if ((w === 0 || h === 0) && window.parent !== window) {
+        try {
+            const pw = window.parent.innerWidth || window.parent.document.documentElement.clientWidth;
+            const ph = window.parent.innerHeight || window.parent.document.documentElement.clientHeight;
+            if (pw > 0) w = pw;
+            if (ph > 0) h = ph;
+        } catch (e) {
+            // 跨域无法访问父窗口
+        }
+    }
+
+    // 最终回退到默认值（避免返回 0）
+    return {
+        width: w > 0 ? w : 800,
+        height: h > 0 ? h : 600
+    };
+}
+
+// 完全限制在视口内（不允许任何部分超出）
+function constrainFullyInViewport(x, y, elementWidth, elementHeight) {
+    const viewport = getViewportSize();
+
+    const boundedX = clamp(x, 0, viewport.width - elementWidth);
+    const boundedY = clamp(y, 0, viewport.height - elementHeight);
+
+    return { x: boundedX, y: boundedY };
+}
+
+// 拖动相关变量
+let isDragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let btnStartX = 0;
+let btnStartY = 0;
+let hasMoved = false;
+
+// 手机界面拖动变量
+let isPhoneDragging = false;
+let phoneDragStartX = 0;
+let phoneDragStartY = 0;
+let phoneStartX = 0;
+let phoneStartY = 0;
+
+// 置顶状态
+let isPinned = false;
+
+
+// 论坛生成状态标记
+let isForumGenerating = false;
+
+//  论坛相关函数将在文件末尾"全局函数暴露"区域统一定义
+
+// ==================== 初始化函数 ====================
+function initializeMobilePhone() {
+
+    //  论坛设置相关函数（在initializeMobilePhone中重新定义，确保作用域一致）
+    window.phoneOpenForumSettings = function () {
+
+        //  注意：返回时会重新生成论坛面板，所以不需要保存导航栈
+        // 清空导航栈，确保不会有旧的导航历史干扰
+        navigationStack.length = 0;
+
+        const manager = window.phoneForumManager;
+        const settings = manager.settings;
+        const apiConfig = manager.apiConfig.settings;
+
+        const html = `
+            <div style="padding: 12px;">
+                <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #2d3748;"> 论坛设置</h3>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #4a5568; font-weight: 500;"> 论坛风格</label>
+                    <select id="forum-style" style="width: 100%; padding: 8px; background: white; border: 1px solid #cbd5e0; border-radius: 4px; color: #2d3748;">
+                        <option value="特图的众神剧场" ${settings.forumStyle === '特图的众神剧场' ? 'selected' : ''}>特图的众神剧场</option>
+                        ${settings.customStyles && settings.customStyles.length > 0 ? settings.customStyles.map(style =>
+            `<option value="custom:${style.name}" ${settings.forumStyle === `custom:${style.name}` ? 'selected' : ''}>${style.name}</option>`
+        ).join('') : ''}
+                    </select>
+                </div>
+                
+                <!-- 使用预设和世界书选项 -->
+                <div style="margin-bottom: 16px;">
+                    <label style="display: flex; align-items: center; cursor: pointer; padding: 10px; background: #f7fafc; border: 1px solid #cbd5e0; border-radius: 4px;">
+                        <input type="checkbox" id="use-preset-worldbook" ${settings.usePresetAndWorldBook ? 'checked' : ''} style="margin-right: 8px; width: 16px; height: 16px; cursor: pointer;">
+                        <span style="font-size: 12px; color: #2d3748; font-weight: 500;">📚 使用预设和世界书</span>
+                    </label>
+                    <small style="display: block; margin-top: 4px; padding-left: 24px; font-size: 10px; color: #718096;">
+                        启用后将使用酒馆当前预设及世界书；关闭后仅使用聊天历史和自定义提示词
+                    </small>
+                </div>
+                
+                <!-- API类型选择 -->
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #4a5568; font-weight: 500;"> API类型</label>
+                    <select id="forum-api-type" style="width: 100%; padding: 8px; background: white; border: 1px solid #cbd5e0; border-radius: 4px; color: #2d3748;">
+                        <option value="sillytavern" ${!apiConfig.enabled && settings.apiType === 'sillytavern' ? 'selected' : ''}>SillyTavern 默认</option>
+                        <option value="custom" ${apiConfig.enabled || settings.apiType === 'custom' ? 'selected' : ''}>自定义 API（独立配置）</option>
+                    </select>
+                </div>
+                
+                <!-- 自定义 API 配置面板（独立配置） -->
+                <div id="custom-api-settings" style="display: ${apiConfig.enabled || settings.apiType === 'custom' ? 'block' : 'none'}; margin-bottom: 16px; padding: 12px; background: #f0f9ff; border: 2px solid #3b82f6; border-radius: 6px;">
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 4px; font-size: 11px; color: #4a5568; font-weight: 500;">API URL (需兼容OpenAI)</label>
+                        <input type="text" id="api-url" value="${escapeHtml(apiConfig.apiUrl)}" placeholder="例如: https://api.openai.com/v1" style="width: 100%; padding: 6px; background: white; border: 1px solid #cbd5e0; border-radius: 4px; color: #2d3748; box-sizing: border-box; font-size: 12px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 4px; font-size: 11px; color: #4a5568; font-weight: 500;">API Key</label>
+                        <input type="password" id="api-key" value="${escapeHtml(apiConfig.apiKey)}" placeholder="sk-..." style="width: 100%; padding: 6px; background: white; border: 1px solid #cbd5e0; border-radius: 4px; color: #2d3748; box-sizing: border-box; font-size: 12px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 4px; font-size: 11px; color: #4a5568; font-weight: 500;">模型 (Model)</label>
+                        <select id="api-model" style="width: 100%; padding: 6px; background: white; border: 1px solid #cbd5e0; border-radius: 4px; color: #2d3748; font-size: 12px;">
+                            <option value="">请先获取模型列表...</option>
+                        </select>
+                        <div style="display: flex; gap: 6px; margin-top: 6px;">
+                            <button id="fetch-models-btn" style="flex: 1; padding: 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 500;">
+                                <i class="fas fa-sync-alt"></i> 获取模型
+                            </button>
+                            <button id="test-connection-btn" style="flex: 1; padding: 8px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 500;">
+                                <i class="fas fa-check-circle"></i> 测试连接
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="api-status" style="display: none; margin-top: 8px; padding: 8px; border-radius: 4px; font-size: 11px;"></div>
+                    
+                    <div style="margin-top: 8px; padding: 8px; background: #e0f2fe; border-radius: 4px; font-size: 10px; color: #0c4a6e;">
+                        <strong>💡 提示：</strong>使用自定义 API 将独立调用 LLM
+                    </div>
+                    
+                    <!-- 自动生成论坛配置（仅自定义API可用） -->
+                    <div style="margin-top: 12px; padding: 10px; background: #fef3c7; border: 1px solid #f59e0b; border-radius: 6px;">
+                        <div style="font-size: 12px; font-weight: 600; color: #92400e; margin-bottom: 8px;">
+                            <i class="fas fa-magic"></i> 自动生成论坛
+                        </div>
+                        
+                        <label style="display: flex; align-items: center; cursor: pointer; margin-bottom: 8px;">
+                            <input type="checkbox" id="auto-generate-enabled" ${apiConfig.autoGenerate?.enabled ? 'checked' : ''} style="margin-right: 8px; width: 14px; height: 14px; cursor: pointer;">
+                            <span style="font-size: 11px; color: #78350f;">启用自动生成</span>
+                        </label>
+                        
+                        <div style="margin-bottom: 8px;">
+                            <label style="display: block; margin-bottom: 4px; font-size: 10px; color: #78350f;">触发阈值（每隔多少楼自动生成）</label>
+                            <input type="number" id="auto-generate-threshold" value="${apiConfig.autoGenerate?.threshold || 10}" min="1" max="100" style="width: 100%; padding: 5px; background: white; border: 1px solid #d97706; border-radius: 4px; color: #78350f; box-sizing: border-box; font-size: 11px;">
+                        </div>
+                        
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" id="auto-generate-notification" ${apiConfig.autoGenerate?.showNotification !== false ? 'checked' : ''} style="margin-right: 8px; width: 14px; height: 14px; cursor: pointer;">
+                            <span style="font-size: 11px; color: #78350f;">生成时显示弹窗通知</span>
+                        </label>
+                        
+                        <div style="margin-top: 6px; font-size: 9px; color: #a16207;">
+                            💡 当聊天消息达到设定楼层数时，将自动生成论坛内容
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button id="manage-custom-styles-btn" style="width: 100%; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px;">
+                         自定义论坛
+                    </button>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="phone-forum-save-settings-btn" style="flex: 1; padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                        <button class="phone-forum-close-settings-btn" style="flex: 1; padding: 10px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">
+                            <i class="fas fa-times"></i> 取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $('#phone-app-title').text(' 论坛设置');
+        $('#phone-app-body').html(html);
