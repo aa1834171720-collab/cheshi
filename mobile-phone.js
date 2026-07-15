@@ -847,16 +847,650 @@ body #mobile-trigger-btn.tablet-mode {
     font-size: 14px;
 }
 
+/* ==================== 聊天界面样式 ==================== */
+.chat-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff !important;
+    z-index: 200 !important;
+    display: none;
+    flex-direction: column;
+    animation: slideIn 0.3s;
+}
 
-    
-    
+.chat-panel.active {
+    display: flex;
+}
+
+.chat-header {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background: #f8f9fa;
+}
+
+.message-item {
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.message-item.mine {
+    justify-content: flex-end;
+}
+
+.message-item.other {
+    justify-content: flex-start;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    word-wrap: break-word;
+}
+
+.message-item.mine .message-bubble {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.message-item.other .message-bubble {
+    background: white;
+    color: #2d3748;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.message-sender {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 3px;
+}
+
+.message-time {
+    font-size: 10px;
+    opacity: 0.8;
+    margin-top: 5px;
+    color: inherit;
+}
+
+.chat-input-area {
+    height: 60px;
+    background: white;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.chat-input {
+    flex: 1;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 0 15px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #ffffff;
+    color: #1f2937;
+}
+
+.chat-input:focus {
+    border-color: #667eea;
+    background: #ffffff;
+}
+
+.chat-input::placeholder {
+    color: #9ca3af;
+    opacity: 1;
+}
+
+.chat-send-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.chat-send-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+}
+
+.chat-send-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+/*  发送中状态 - 变暗、变矩形 */
+.chat-send-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6 !important;
+    background: #6c757d !important; /* 灰色背景 */
+    border-radius: 8px !important; /* 变成矩形（圆角矩形） */
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* 发送中状态的矩形图标动画 */
+.chat-send-btn .fa-stop {
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* ==================== 设置页面样式 ==================== */
+.settings-section {
+    margin-bottom: 20px;
+}
+
+.settings-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 12px;
+    padding-left: 5px;
+}
+
+.wallpaper-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wallpaper-category {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wallpaper-category:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.wallpaper-category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wallpaper-category-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.wallpaper-category-count {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.wallpaper-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+    display: none;
+}
+
+.wallpaper-grid.active {
+    display: grid;
+}
+
+.wallpaper-item {
+    aspect-ratio: 9/16;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    background: #f3f4f6;
+    transition: all 0.2s ease;
+}
+
+.wallpaper-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wallpaper-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wallpaper-item.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    background: #10b981;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.wallpaper-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.wallpaper-loading::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border: 3px solid #f3f4f6;
+    border-top-color: #667eea;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    z-index: 10;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==================== 图片加载loading效果 ==================== */
+.loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 -25px;
+    border: 4px solid rgba(91, 164, 229, 0.2);
+    border-top-color: #5BA4E5;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    z-index: 10;
+}
 
 /* ==================== 响应式适配 - 教科书级实现 ==================== */
 
-
+/* 平板端适配 (≤768px) */
+@media (max-width: 768px) {
+    /* 框架适配 */
+    .mobile-phone-frame,
+    #mobile-phone-overlay .mobile-phone-frame {
+        width: 80% !important;
+        max-width: 300px !important;
+    }
     
-
-
+    /* 触发按钮 */
+    #mobile-trigger-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    /* 状态栏 */
+    .mobile-status-bar {
+        height: 40px;
+        padding: 0 12px;
+        font-size: 13px;
+    }
+    
+    /* 应用 Header */
+    .app-header {
+        height: 50px;
+        padding: 0 15px;
+    }
+    
+    .app-title {
+        font-size: 17px;
+    }
+    
+    .back-button,
+    .pin-btn {
+        font-size: 20px;
+        padding: 5px;
+    }
+    
+    /* 主屏幕 */
+    .home-screen {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    /* 天气卡片 */
+    .weather-card {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .weather-time {
+        font-size: 26px;
+    }
+    
+    .weather-date {
+        font-size: 13px;
+    }
+    
+    .weather-location {
+        font-size: 12px;
+    }
+    
+    /* 应用图标 */
+    .app-icon {
+        gap: 6px;
+    }
+    
+    .app-icon-bg {
+        width: 52px;
+        height: 52px;
+        font-size: 26px;
+        border-radius: 14px;
+    }
+    
+    .app-label {
+        font-size: 11px;
+    }
+    
+    /* 应用网格 */
+    .app-grid {
+        gap: 15px;
+    }
+    
+    .app-row {
+        gap: 18px;
+    }
+    
+    /* 应用内容 */
+    .app-body {
+        padding: 15px;
+    }
+    
+    /* 列表项 */
+    .list-item {
+        padding: 12px;
+    }
+    
+    .list-item-name {
+        font-size: 14px;
+    }
+    
+    .list-item-value {
+        font-size: 15px;
+    }
+    
+    /* 消息列表 */
+    .message-item {
+        padding: 12px;
+    }
+    
+    .message-name {
+        font-size: 14px;
+    }
+    
+    .message-preview {
+        font-size: 12px;
+    }
+    
+    /* 聊天界面 */
+    .chat-bubble {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+    
+    .chat-input-container {
+        padding: 12px 15px;
+    }
+    
+    .chat-input {
+        font-size: 14px;
+        padding: 9px 14px;
+    }
+    
+    .send-button {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+    
+    /* 商品卡片 */
+    .shop-item {
+        padding: 12px;
+    }
+    
+    .shop-item-name {
+        font-size: 14px;
+    }
+    
+    .shop-item-price {
+        font-size: 15px;
+    }
+    
+    .shop-buy-btn {
+        padding: 7px 14px;
+        font-size: 13px;
+    }
+    
+    .shop-buy-btn:hover {
+        transform: scale(1.05);
+    }
+    
+    .shop-buy-btn:active {
+        transform: scale(0.98);
+    }
+    
+    /* ========== 自定义确认弹窗样式 ========== */
+    .custom-confirm-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100000;
+        opacity: 0;
+        animation: fadeIn 0.2s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+        to { opacity: 1; }
+    }
+    
+    .custom-confirm-modal {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        padding: 2px;
+        min-width: 340px;
+        max-width: 480px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        animation: slideUp 0.3s ease-out;
+    }
+    
+    @keyframes slideUp {
+        from {
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    }
+    
+    .custom-confirm-content {
+        background: #1f2937;
+        border-radius: 18px;
+        padding: 28px 24px 20px;
+    }
+    
+    .confirm-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        animation: iconPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes iconPulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+        50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+    }
+    
+    .confirm-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #f3f4f6;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+    
+    .confirm-message {
+        font-size: 15px;
+        line-height: 1.7;
+        color: #d1d5db;
+        margin-bottom: 24px;
+        text-align: center;
+        white-space: pre-line;
+    }
+    
+    .confirm-item-info {
+        background: rgba(102, 126, 234, 0.1);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 24px;
+    }
+    
+    .confirm-item-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #a5b4fc;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .confirm-item-desc {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-bottom: 12px;
+        line-height: 1.6;
+    }
+    
+    .confirm-item-price {
+        font-size: 16px;
+        font-weight: 600;
+        color: #fbbf24;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .confirm-buttons {
+        display: flex;
+        gap: 12px;
+    }
+    
+    .confirm-btn {
+        flex: 1;
+        padding: 14px 20px;
+        border: none;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .confirm-btn-cancel {
+        background: #374151;
+        color: #d1d5db;
+    }
+    
+    .confirm-btn-cancel:hover {
+        background: #4b5563;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .confirm-btn-confirm {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .confirm-btn-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .confirm-btn:active {
+        transform: translateY(0) scale(0.98);
+    }
+    
+    /* 好友卡片 */
+    .friend-card {
+        padding: 12px;
+    }
+    
+    .friend-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+    
+    .friend-name {
+        font-size: 15px;
+    }
+    
+    .friend-stats {
+        font-size: 11px;
+    }
+}
 
 /* 大屏手机适配 (≤480px) */
 @media (max-width: 480px) {
@@ -990,7 +1624,71 @@ body #mobile-trigger-btn.tablet-mode {
     .message-avatar {
         width: 42px;
         height: 42px;
-
+        font-size: 18px;
+    }
+    
+    .message-name {
+        font-size: 13px;
+    }
+    
+    .message-preview {
+        font-size: 11px;
+    }
+    
+    .message-time {
+        font-size: 10px;
+    }
+    
+    /* 聊天界面 */
+    .chat-messages {
+        gap: 12px;
+        padding: 10px;
+    }
+    
+    .chat-bubble {
+        font-size: 13px;
+        padding: 9px 13px;
+        border-radius: 16px;
+    }
+    
+    .chat-time {
+        font-size: 10px;
+    }
+    
+    .chat-input-container {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+    
+    .chat-input {
+        font-size: 13px;
+        padding: 8px 12px;
+        border-radius: 20px;
+    }
+    
+    .send-button {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+    }
+    
+    /* 商品卡片 */
+    .shop-grid {
+        gap: 10px;
+    }
+    
+    .shop-item {
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .shop-item-name {
+        font-size: 13px;
+    }
+    
+    .shop-item-desc {
+        font-size: 11px;
+    }
     
     .shop-item-price {
         font-size: 14px;
@@ -1061,6 +1759,101 @@ body #mobile-trigger-btn.tablet-mode {
     }
 }
 
+/* 小屏手机适配 (≤360px) */
+@media (max-width: 360px) {
+    /* 框架适配 */
+    .mobile-phone-frame,
+    #mobile-phone-overlay .mobile-phone-frame {
+        width: 95% !important;
+        border-radius: 25px !important;
+        padding: 5px !important;
+    }
+    
+    #mobile-phone-overlay .mobile-phone-screen {
+        border-radius: 20px !important;
+    }
+    
+    /* 触发按钮 */
+    #mobile-trigger-btn {
+        width: 40px;
+        height: 40px;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    /* 状态栏 */
+    .mobile-status-bar {
+        height: 34px;
+        padding: 0 8px;
+        font-size: 11px;
+    }
+    
+    /* 应用 Header */
+    .app-header {
+        height: 40px;
+        padding: 0 10px;
+    }
+    
+    .app-title {
+        font-size: 15px;
+    }
+    
+    .back-button,
+    .pin-btn {
+        font-size: 16px;
+        padding: 3px;
+    }
+    
+    /* 主屏幕 */
+    .home-screen {
+        padding: 10px;
+        gap: 10px;
+    }
+    
+    /* 天气卡片 */
+    .weather-card {
+        padding: 10px;
+    }
+    
+    .weather-time {
+        font-size: 20px;
+    }
+    
+    .weather-date {
+        font-size: 11px;
+    }
+    
+    /* 应用图标 */
+    .app-icon-bg {
+        width: 42px;
+        height: 42px;
+        font-size: 21px;
+        border-radius: 10px;
+    }
+    
+    .app-label {
+        font-size: 9px;
+    }
+    
+    .app-grid {
+        gap: 10px;
+    }
+    
+    .app-row {
+        gap: 12px;
+    }
+    
+    /* 应用内容 */
+    .app-body {
+        padding: 10px;
+    }
+    
+    /* 列表项 */
+    .list-item-name {
+        font-size: 12px;
+    }
+    
+    .list-item-value {
         font-size: 13px;
     }
     
@@ -1118,7 +1911,23 @@ body #mobile-trigger-btn.tablet-mode {
     }
 }
 
-
+/* 横屏优化 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .mobile-phone-frame,
+    #mobile-phone-overlay .mobile-phone-frame {
+        width: 50% !important;
+        max-width: 500px !important;
+    }
+    
+    .home-screen,
+    .app-body {
+        padding: 10px;
+    }
+    
+    .app-grid {
+        gap: 10px;
+    }
+}
 
 /* ==================== 滚动条 ==================== */
 .home-screen::-webkit-scrollbar,
@@ -1208,6 +2017,36 @@ body #mobile-trigger-btn.tablet-mode {
 .wallpaper-close-btn {
     position: absolute;
     top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 201;
+}
+
+.wallpaper-close-btn i {
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.wallpaper-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.wallpaper-close-btn:active {
+    transform: rotate(90deg) scale(0.9);
+}
+</style>
+`;
 
 // ==================== 全局变量 ====================
 let currentPhoneData = null;
@@ -2689,8 +3528,112 @@ function bindPhoneEvents() {
         closeAppPanel();
     });
 
+    //  绑定创建群聊按钮（使用事件委托）
+    $('body').off('click.createGroupBtn').on('click.createGroupBtn', '.create-group-button', function (e) {
+        e.stopPropagation();
+        openCreateGroupPanel();
+    });
 
+    //  绑定聊天界面中的删除群聊按钮（使用事件委托）
+    $('body').off('click.deleteGroupBtn').on('click.deleteGroupBtn', '.chat-delete-group-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        const groupId = $(this).data('group-id');
+        const groupName = $(this).data('group-name');
+        deleteGroup(groupId, groupName);
+    });
 
+    //  绑定询问阿罗娜按钮（使用事件委托）
+    $('body').off('click.askArona').on('click.askArona', '.ask-arona-btn', async function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        const $btn = $(this);
+        const originalHtml = $btn.html();
+
+        // 禁用按钮并显示加载状态
+        $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> 发送中...');
+
+        try {
+            if (!window.messageSender) {
+                throw new Error('消息发送器未初始化');
+            }
+
+            const message = '询问阿罗娜，有没有什么委托需要处理';
+            const success = await window.messageSender.sendToChat(message);
+
+            if (success) {
+                if (typeof toastr !== 'undefined') {
+                    toastr.success('已向阿罗娜发送询问', '发送成功');
+                }
+                // 恢复按钮状态
+                $btn.prop('disabled', false).html(originalHtml);
+            } else {
+                throw new Error('发送消息失败');
+            }
+        } catch (error) {
+            if (typeof toastr !== 'undefined') {
+                toastr.error('发送失败: ' + error.message, '错误');
+            }
+            // 恢复按钮状态
+            $btn.prop('disabled', false).html(originalHtml);
+        }
+    });
+
+    // 绑定联系人点击事件（使用事件委托到 body）
+    // 注意：由于联系人列表在 #phone-app-body 中动态生成，需要使用事件委托
+    $('body').off('click.contactItem').on('click.contactItem', '.contact-item', function (e) {
+        e.stopPropagation();
+
+        const $item = $(this);
+        const contactId = $item.data('id');
+        const contactName = $item.data('name');
+        const contactType = $item.data('type');
+        const members = $item.data('members') || '';
+        const isGroup = contactType === 'group';
+
+        if (!contactId || !contactName) {
+            return;
+        }
+
+        openChatPanel(contactId, contactName, isGroup, members);
+    });
+
+    // 绑定聊天界面返回按钮
+    $('#chat-back-btn').on('click', function () {
+        closeChatPanel();
+    });
+
+    // 绑定聊天发送按钮
+    $('#chat-send-btn').on('click', function () {
+        sendChatMessage();
+    });
+
+    // 绑定聊天输入框回车发送
+    $('#chat-input').on('keypress', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChatMessage();
+        }
+    });
+
+    //  图片点击事件（使用事件委托）
+    $('body').off('click.messageImage').on('click.messageImage', '.clickable-image', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const imageUrl = $(this).data('image-url');
+        if (imageUrl) {
+            viewFullImage(imageUrl);
+        }
+    });
+
+    // 壁纸分类展开/收起（使用事件委托）
+    $(document).on('click', '.wallpaper-category-header', function (e) {
+        const categoryName = $(this).data('category');
+        if (categoryName) {
+            toggleWallpaperCategory(categoryName);
+        }
+    });
 
     // 论坛按钮点击（使用jQuery事件委托，和好友一样的方式）
     $(document).on('click', '.phone-forum-generate-btn', function (e) {
@@ -2700,6 +3643,45 @@ function bindPhoneEvents() {
     });
 
     $(document).on('click', '.phone-forum-settings-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        window.phoneOpenForumSettings && window.phoneOpenForumSettings();
+    });
+
+    $(document).on('click', '.phone-forum-save-settings-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        window.phoneSaveForumSettings && window.phoneSaveForumSettings();
+    });
+
+    $(document).on('click', '.phone-forum-close-settings-btn', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        window.phoneCloseForumSettings && window.phoneCloseForumSettings();
+    });
+
+    // 好友列表项点击（使用事件委托）
+    $(document).on('click', '.friend-item', function (e) {
+        e.stopPropagation();
+        const $friendItem = $(this);
+        const friendName = $friendItem.data('friend-name');
+
+        if (!friendName) {
+            return;
+        }
+
+        const relationshipSource = getRelationshipDataSource();
+        if (!relationshipSource) {
+            return;
+        }
+
+        const friendData = relationshipSource[friendName];
+        if (!friendData) {
+            return;
+        }
+
+        showFriendDetail(friendName, friendData);
+    });
 
     // 论坛帖子点击（使用事件委托）
     $(document).on('click', '.forum-post-item', function (e) {
@@ -4302,9 +5284,2266 @@ function closeAppPanel() {
         }
     }
 }
-              
+
+// ==================== 消息发送器类 ====================
+/**
+ * MessageSender - 负责处理消息发送和格式化
+ * 参考原项目的 message-sender.js
+ */
+class MessageSender {
+    constructor() {
+        this.currentFriendId = null;
+        this.currentFriendName = null;
+        this.isGroup = false;
+    }
+
+    /**
+     * 设置当前聊天对象
+     */
+    setCurrentChat(friendId, friendName, isGroup = false) {
+        this.currentFriendId = friendId;
+        this.currentFriendName = friendName;
+        this.isGroup = isGroup;
+    }
+
+    /**
+     * 发送消息到SillyTavern
+     */
+    async sendToChat(message) {
+        try {
+
+            // 尝试从父窗口获取元素（如果在 iframe 中）
+            let targetDocument = document;
+            if (window.parent && window.parent !== window) {
+                try {
+                    targetDocument = window.parent.document;
+                } catch (e) {
+                }
+            }
+
+            const originalInput = targetDocument.getElementById('send_textarea');
+            const sendButton = targetDocument.getElementById('send_but');
+
+            if (!originalInput || !sendButton) {
+                return false;
+            }
+
+            if (originalInput.disabled || sendButton.classList.contains('disabled')) {
+                return false;
+            }
+
+            // 追加消息到输入框
+            const existingValue = originalInput.value;
+            const newValue = existingValue ? existingValue + '\n' + message : message;
+            originalInput.value = newValue;
+
+            // 触发输入事件
+            originalInput.dispatchEvent(new Event('input', { bubbles: true }));
+            originalInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+            // 延迟点击发送按钮
+            await new Promise(resolve => setTimeout(resolve, 300));
+            sendButton.click();
+
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    /**
+     * 等待 AI 回复完成（监听消息数量变化和内容稳定）
+     * @param {Function} onMessageUpdate - 消息更新回调（可选）
+     */
+    async waitForAIResponse(onMessageUpdate = null) {
+        return new Promise((resolve) => {
+            // 获取 SillyTavern 上下文
+            let targetWindow = window;
+            if (window.parent && window.parent !== window) {
+                try {
+                    if (window.parent.SillyTavern) {
+                        targetWindow = window.parent;
+                    }
+                } catch (e) {
+                }
+            }
+
+            if (!targetWindow.SillyTavern || !targetWindow.SillyTavern.getContext) {
+                // 如果无法获取上下文，等待5秒后结束
+                setTimeout(resolve, 5000);
+                return;
+            }
+
+            const context = targetWindow.SillyTavern.getContext();
+            const initialMessageCount = context.chat ? context.chat.length : 0;
+
+            let checkCount = 0;
+            const maxChecks = 300; // 最多等待30秒
+            let hasNewMessage = false;
+            let lastMessageCount = initialMessageCount;
+            let lastMessageContent = '';
+            let stableCount = 0; // 内容稳定计数器
+
+            const checkInterval = setInterval(() => {
+                checkCount++;
+
+                try {
+                    const currentContext = targetWindow.SillyTavern.getContext();
+                    const currentMessageCount = currentContext.chat ? currentContext.chat.length : 0;
+
+                    if (currentMessageCount > initialMessageCount) {
+                        if (!hasNewMessage) {
+                            hasNewMessage = true;
+                        }
+
+                        if (currentMessageCount > lastMessageCount && onMessageUpdate) {
+                            onMessageUpdate();
+                            lastMessageCount = currentMessageCount;
+                            stableCount = 0;
+                        }
+
+                        const lastMessage = currentContext.chat[currentContext.chat.length - 1];
+                        const currentContent = lastMessage?.mes || '';
+
+                        if (currentContent !== lastMessageContent) {
+                            lastMessageContent = currentContent;
+                            stableCount = 0;
+
+                            if (onMessageUpdate && checkCount % 3 === 0) {
+                                onMessageUpdate();
+                            }
+                        } else {
+                            stableCount++;
+
+                            if (stableCount >= 10) {
+                                clearInterval(checkInterval);
+                                if (onMessageUpdate) {
+                                    onMessageUpdate();
+                                }
+                                setTimeout(resolve, 500);
+                                return;
+                            } else if (checkCount % 5 === 0) {
+                                if (onMessageUpdate) {
+                                    onMessageUpdate();
+                                }
+                            }
+                        }
+                    }
+
+                    if (checkCount >= maxChecks) {
+                        clearInterval(checkInterval);
+                        resolve();
+                    }
+                } catch (error) {
+                    clearInterval(checkInterval);
+                    resolve();
+                }
+            }, 100);
+        });
+    }
+
+    /**
+     * 构建并发送消息
+     * @param {string} message - 要发送的消息
+     * @param {Object} uiElements - UI元素引用（可选）
+     */
+    async buildAndSendMessage(message, uiElements = null) {
+        if (!this.currentFriendId || !this.currentFriendName) {
+            throw new Error('未设置当前聊天对象');
+        }
+
+        const messageLines = message.split('\n').filter(line => line.trim());
+        if (messageLines.length === 0) {
+            throw new Error('消息内容不能为空');
+        }
+
+
+        // 格式化消息
+        const formattedMessages = messageLines.map(line => {
+            const content = line.trim();
+            // 群聊使用 [群聊消息|群号|发送者|类型|内容]
+            // 私聊使用 [我方消息|我|号码|类型|内容]
+            return this.isGroup
+                ? `[群聊消息|${this.currentFriendId}|我|文字|${content}]`
+                : `[我方消息|我|${this.currentFriendId}|文字|${content}]`;
+        });
+
+        // 构建最终消息
+        let targetPrefix;
+        if (this.isGroup) {
+            //  获取群聊成员列表（参考 mobile-master）
+            const groupMembers = this.getCurrentGroupMembers();
+            const membersText = groupMembers.length > 0
+                ? `，群聊内成员有${groupMembers.join('、')}`
+                : '';
+
+            //  简化提示词，去掉格式说明部分（原完整版本已在下方注释中保留）
+            targetPrefix = `向${this.currentFriendName}（${this.currentFriendId}）发送群聊${membersText}`;
+            // targetPrefix = `向${this.currentFriendName}（${this.currentFriendId}）发送群聊${membersText}。请按照线上聊天群聊消息中的要求和格式生成群聊内角色回复，回复需要符合所有角色的人设和当前剧情`;
+        } else {
+            //  简化提示词，去掉格式说明部分（原完整版本已在下方注释中保留）
+            // targetPrefix = `向${this.currentFriendName}（${this.currentFriendId}）发送消息`;
+            targetPrefix = `向${this.currentFriendName}（${this.currentFriendId}）发送消息，请按照线上聊天私聊消息中的要求和格式生成角色回复，回复需要符合角色人设和当前剧情`;
+        }
+
+        //  添加详细的响应格式说明
+        // const formatInstructions = this.isGroup
+        // ? `\n\n 群聊消息响应格式要求\n必须使用以下格式回复：\n[群聊消息|群号|发送者名字|消息类型|消息内容]\n\n格式说明：\n- 群号必须是 ${this.currentFriendId}\n- 发送者名字是群内角色的名字\n- 消息类型通常是"文字"，也可以是"语音"、"图片"、"表情包"等\n- 每条消息必须单独成行\n- 可以有多个角色回复，每个角色一条消息`
+        // : `\n\n 私聊消息响应格式要求\n必须使用以下格式回复：\n[对方消息|角色名字|号码|消息类型|消息内容]\n\n格式说明：\n- 号码必须是 ${this.currentFriendId}\n- 角色名字是 ${this.currentFriendName}\n- 消息类型通常是"文字"，也可以是"语音"、"图片"、"表情包"等\n- 每条消息必须单独成行\n- 可以回复多条消息`;
+
+        //  包含格式说明的完整消息
+        const formatStr = '以下为最高优先级的元指令，此为特例输入，暂停故事演绎，不推进和输出任何正文剧情，改为按要求模拟消息回复：';
+
+        //  为群聊添加明确的角色列表说明
+        let formatInstructions;
+        if (this.isGroup) {
+            const groupMembers = this.getCurrentGroupMembers();
+            const membersListText = groupMembers.length > 0
+                ? `\n- 本次群聊涉及的群内角色有：${groupMembers.join('、')}\n- 发送者名字必须从以上角色列表中选择`
+                : '\n- 发送者名字是群内角色的名字';
+
+            formatInstructions = `
+
+ 群聊消息响应格式要求
+必须使用以下格式回复：
+[群聊消息|群号|发送者名字|消息类型|消息内容]
+
+格式说明：
+- 群号必须是 ${this.currentFriendId}${membersListText}
+- 发送者名字必须使用简体中文，不能使用繁体字
+- 消息类型通常是"文字"，也可以是"语音"、"图片"、"表情包"等，如果存在image_insertion_guide任务，且回复角色存在插图列表，则消息图片优先使用image_insertion_guide中规定的图片格式回复
+- 每条消息必须单独成行
+- 可以有多个角色回复，每个角色一条消息`;
+        } else {
+            formatInstructions = `
+
+ 私聊消息响应格式要求
+必须使用以下格式回复：
+[对方消息|角色名字|号码|消息类型|消息内容]
+
+格式说明：
+- 号码必须是 ${this.currentFriendId}
+- 角色名字是 ${this.currentFriendName}，必须使用简体中文，不能使用繁体字
+- 消息类型通常是"文字"，也可以是"语音"、"图片"、"表情包"等，如果存在image_insertion_guide任务，且回复角色存在插图列表，则消息图片优先使用image_insertion_guide中规定的图片格式回复
+- 每条消息必须单独成行
+- 可以回复多条消息`;
+        }
+
+        // 构建最终消息，群聊时添加额外的提示
+        const finalMessage = this.isGroup
+            ? `${formatStr}${formatInstructions}，请用规定格式，${targetPrefix}\n\n我发送的消息：\n${formattedMessages.join('\n')}\n\n请令群内角色按格式回复我发送的消息`
+            : `${formatStr}${formatInstructions}，请用规定格式，${targetPrefix}\n\n我发送的消息：\n${formattedMessages.join('\n')}\n\n请令私聊对象角色按格式回复我发送的消息`;
+
+        const success = await this.sendToChat(finalMessage);
+
+        if (success) {
+            //  显示成功提示
+            this.showSendSuccessToast(messageLines.length > 1
+                ? `${messageLines.length}条消息`
+                : messageLines[0]
+            );
+        }
+
+        return success;
+    }
+
+    /**
+     * 显示发送成功提示
+     */
+    showSendSuccessToast(message) {
+        if (typeof toastr !== 'undefined') {
+            toastr.success(`发送给: ${this.currentFriendName}\n${message.length > 20 ? message.substring(0, 20) + '...' : message}`);
+        }
+    }
+
+    /**
+     * 显示发送失败提示
+     */
+    showSendErrorToast(error) {
+        if (typeof toastr !== 'undefined') {
+            toastr.error(`发送失败: ${error}`);
+        }
+    }
+
+    /**
+     * 发送消息的主要方法
+     * @param {string} message - 要发送的消息
+     * @param {Object} uiElements - UI元素引用（可选）
+     */
+    async sendMessage(message, uiElements = null) {
+        if (!message.trim()) {
+            this.showSendErrorToast('消息内容不能为空');
+            return false;
+        }
+
+        if (!this.currentFriendId) {
+            this.showSendErrorToast('请选择一个聊天对象');
+            return false;
+        }
+
+        try {
+            const success = await this.buildAndSendMessage(message, uiElements);
+            if (!success) {
+                this.showSendErrorToast('发送失败，请重试');
+            }
+            return success;
+        } catch (error) {
+            this.showSendErrorToast(error.message || '发送失败');
+            return false;
+        }
+    }
+
+    /**
+     * 清空当前聊天对象
+     */
+    clearCurrentChat() {
+        this.currentFriendId = null;
+        this.currentFriendName = null;
+        this.isGroup = false;
+    }
+
+    /**
+     * 获取当前群聊的成员列表
+     * 参考 mobile-master/app/message-sender.js 的实现
+     */
+    getCurrentGroupMembers() {
+        if (!this.isGroup || !this.currentFriendId) {
+            return [];
+        }
+
+        try {
+            // 方法1: 从聊天记录中查找最新的群聊信息
+            if (!window.SillyTavern || !window.SillyTavern.getContext) {
+                return [];
+            }
+
+            const context = window.SillyTavern.getContext();
+            const messages = context.chat || [];
+            let latestGroupInfo = null;
+
+
+            // 创建正则表达式匹配该群的信息（不限制群号，后面再筛选）
+            // 格式1: [群聊|群名|群号|成员列表]
+            const groupRegex1 = /\[群聊\|([^\|]+)\|([^\|]+)\|([^\]]+)\]/g;
+            // 格式2: [创建群聊|群号|群名|成员列表]
+            const groupRegex2 = /\[创建群聊\|([^\|]+)\|([^\|]+)\|([^\]]+)\]/g;
+
+            // 从最新消息开始查找
+            for (let i = messages.length - 1; i >= 0; i--) {
+                let messageText = messages[i].mes || '';
+
+                //  清理提示词模板：从消息文本中删除模板部分，保留真实内容
+                // 删除包含"群聊消息响应格式要求"到"可以有多个角色回复"之间的所有内容
+                messageText = messageText.replace(/群聊消息响应格式要求[\s\S]*?可以有多个角色回复，每个角色一条消息/g, '');
+                messageText = messageText.replace(/私聊消息响应格式要求[\s\S]*?可以回复多条消息/g, '');
+
+                // 删除包含字面量的示例格式
+                messageText = messageText.replace(/\[群聊消息\|群号\|发送者名字\|消息类型\|消息内容\]/g, '');
+                messageText = messageText.replace(/\[对方消息\|角色名字\|号码\|消息类型\|消息内容\]/g, '');
+                messageText = messageText.replace(/\[我方消息\|我\|号码\|消息类型\|消息内容\]/g, '');
+                messageText = messageText.replace(/\[群聊\|群名\|群号\|成员列表\]/g, '');
+                messageText = messageText.replace(/\[创建群聊\|群号\|群名\|成员列表\]/g, '');
+
+                // 如果清理后的消息为空，跳过
+                if (!messageText.trim()) {
+                    continue;
+                }
+
+                // 检查消息中是否包含群聊相关内容
+                if (messageText.includes('[群聊|')) {
+                } else if (messageText.includes('[创建群聊|')) {
+                }
+
+                // 重置正则表达式索引
+                groupRegex1.lastIndex = 0;
+                groupRegex2.lastIndex = 0;
+
+                // 尝试匹配第一种格式：[群聊|群名|群号|成员列表]
+                let match = groupRegex1.exec(messageText);
+                if (match) {
+                    const groupName = match[1];
+                    const groupId = match[2];
+                    const members = match[3];
+
+
+                    // 检查群号是否匹配（使用字符串比较）
+                    if (String(groupId) === String(this.currentFriendId)) {
+                        latestGroupInfo = {
+                            groupName: groupName,
+                            members: members
+                        };
+                        break;
+                    }
+                }
+
+                // 尝试匹配第二种格式：[创建群聊|群号|群名|成员列表]
+                match = groupRegex2.exec(messageText);
+                if (match) {
+                    const groupId = match[1];
+                    const groupName = match[2];
+                    const members = match[3];
+
+
+                    // 检查群号是否匹配（使用字符串比较）
+                    if (String(groupId) === String(this.currentFriendId)) {
+                        latestGroupInfo = {
+                            groupName: groupName,
+                            members: members
+                        };
+                        break;
+                    }
+                }
+            }
+
+            if (latestGroupInfo) {
+                // 解析成员列表
+                const members = latestGroupInfo.members
+                    .split(/[、,，]/)
+                    .map(name => name.trim())
+                    .filter(name => name);
+
+                return members;
+            }
+
+            // 方法2: 如果没找到定义，尝试从群聊消息中提取成员
+            const membersSet = new Set();
+            const groupMessageRegex = new RegExp(`\\[群聊消息\\|${this.currentFriendId}\\|([^\\|]+)\\|`, 'g');
+
+            messages.forEach(msg => {
+                const messageText = msg.mes || '';
+                groupMessageRegex.lastIndex = 0;
+                let match;
+                while ((match = groupMessageRegex.exec(messageText)) !== null) {
+                    const senderName = match[1];
+                    if (senderName && senderName !== '我') {
+                        membersSet.add(senderName);
+                    }
+                }
+            });
+
+            // 如果我发送过消息，添加"我"
+            const myGroupMessageRegex = new RegExp(`\\[我方群聊消息\\|我\\|${this.currentFriendId}\\|`, 'g');
+            const hasMyMessage = messages.some(msg => {
+                const messageText = msg.mes || '';
+                myGroupMessageRegex.lastIndex = 0;
+                return myGroupMessageRegex.test(messageText);
+            });
+
+            if (hasMyMessage) {
+                membersSet.add('我');
+            }
+
+            const members = Array.from(membersSet);
+            if (members.length > 0) {
+                return members;
+            }
+
+            return [];
+        } catch (error) {
+            return [];
+        }
+    }
+}
+
+// 创建全局消息发送器实例
+window.messageSender = new MessageSender();
+
+// ==================== 聊天界面功能函数 ====================
+/**
+ * 从聊天记录中提取与指定联系人的消息
+ */
+function extractMessagesForContact(contactId, isGroup = false) {
+    const messages = [];
+    const messageSet = new Set(); // 用于去重
+
+    try {
+        let chatMessages = [];
+
+        let targetWindow = window;
+        if (window.parent && window.parent !== window) {
+            try {
+                if (window.parent.SillyTavern) {
+                    targetWindow = window.parent;
+                }
+            } catch (e) {
+            }
+        }
+
+        if (targetWindow.SillyTavern && targetWindow.SillyTavern.getContext) {
+            const context = targetWindow.SillyTavern.getContext();
+            chatMessages = context.chat || [];
+        } else {
+        }
+
+        chatMessages.forEach((msg, index) => {
+            if (!msg.mes) return;
+            let text = msg.mes;
+
+            //  清理提示词模板：从消息文本中删除模板部分，保留真实内容
+            text = text.replace(/群聊消息响应格式要求[\s\S]*?可以有多个角色回复，每个角色一条消息/g, '');
+            text = text.replace(/私聊消息响应格式要求[\s\S]*?可以回复多条消息/g, '');
+            text = text.replace(/\[群聊消息\|群号\|发送者名字\|消息类型\|消息内容\]/g, '');
+            text = text.replace(/\[对方消息\|角色名字\|号码\|消息类型\|消息内容\]/g, '');
+            text = text.replace(/\[我方消息\|我\|号码\|消息类型\|消息内容\]/g, '');
+            text = text.replace(/\[群聊\|群名\|群号\|成员列表\]/g, '');
+            text = text.replace(/\[创建群聊\|群号\|群名\|成员列表\]/g, '');
+
+            // 如果清理后的消息为空，跳过
+            if (!text.trim()) return;
+
+            // 如果是群聊，记录包含群聊消息的文本
+            // if (isGroup && text.includes('[群聊消息|')) {
+            // }
+
+            // 匹配私聊消息: [我方消息|我|号码|类型|内容] 或 [对方消息|名字|号码|类型|内容]
+            const privateRegex = /\[(我方消息|对方消息)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]/g;
+            // 匹配群聊消息: [群聊消息|群号|发送者|类型|内容]
+            const groupRegex = /\[群聊消息\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]/g;
+            //  新增：匹配我方群聊消息: [我方群聊消息|我|群号|类型|内容]
+            const myGroupRegex = /\[我方群聊消息\|我\|([^|]*)\|([^|]*)\|([^\]]*)\]/g;
+
+            let match;
+
+            if (isGroup) {
+                groupRegex.lastIndex = 0;
+                while ((match = groupRegex.exec(text)) !== null) {
+                    const groupId = match[1].trim();
+                    const sender = match[2].trim();
+                    const msgType = match[3].trim();
+                    const content = match[4];
+
+                    //  过滤模板消息：如果内容仅为"内容"或"消息内容"，跳过
+                    if (content.trim() === '内容' || content.trim() === '消息内容') {
+                        continue;
+                    }
+
+                    if (String(groupId) === String(contactId)) {
+                        const messageKey = `${sender}|${msgType}|${content}`;
+
+                        if (!messageSet.has(messageKey)) {
+                            messageSet.add(messageKey);
+                            messages.push({
+                                isMine: sender === '我',
+                                sender: sender,
+                                type: msgType,
+                                content: content,
+                                time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+                            });
+                        }
+                    }
+                }
+
+                myGroupRegex.lastIndex = 0;
+                while ((match = myGroupRegex.exec(text)) !== null) {
+                    const groupId = match[1].trim();
+                    const msgType = match[2].trim();
+                    const content = match[3];
+
+                    //  过滤模板消息：如果内容仅为"内容"或"消息内容"，跳过
+                    if (content.trim() === '内容' || content.trim() === '消息内容') {
+                        continue;
+                    }
+
+                    if (String(groupId) === String(contactId)) {
+                        const messageKey = `我|${msgType}|${content}`;
+
+                        if (!messageSet.has(messageKey)) {
+                            messageSet.add(messageKey);
+                            messages.push({
+                                isMine: true,
+                                sender: '我',
+                                type: msgType,
+                                content: content,
+                                time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+                            });
+                        }
+                    }
+                }
+            } else {
+                while ((match = privateRegex.exec(text)) !== null) {
+                    const type = match[1];
+                    const sender = match[2].trim();
+                    const number = match[3].trim();
+                    const msgType = match[4].trim();
+                    const content = match[5];
+
+                    //  过滤模板消息：如果内容仅为"内容"或"消息内容"，跳过
+                    if (content.trim() === '内容' || content.trim() === '消息内容') {
+                        continue;
+                    }
+
+
+                    //  使用 String() 转换确保类型一致
+                    if (String(number) === String(contactId)) {
+                        // 创建消息唯一标识，用于去重
+                        const isMine = type === '我方消息';
+                        const senderName = isMine ? '我' : sender;
+                        const messageKey = `${isMine}|${senderName}|${msgType}|${content}`;
+
+                        if (!messageSet.has(messageKey)) {
+                            messageSet.add(messageKey);
+                            messages.push({
+                                isMine: isMine,
+                                sender: senderName,
+                                type: msgType,
+                                content: content,
+                                time: new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+                            });
+                        } else {
+                        }
+                    }
+                }
+            }
+        });
+
+    } catch (error) {
+    }
+
+    return messages;
+}
+
+// 全局变量：聊天界面轮询定时器
+let chatPanelRefreshInterval = null;
+let currentChatContactId = null;
+let currentChatContactName = null;
+let currentChatIsGroup = false;
+
+/**
+ * 打开聊天界面
+ */
+function openChatPanel(contactId, contactName, isGroup = false, members = '') {
+
+    // 保存当前聊天信息（用于恢复定时器）
+    currentChatContactId = contactId;
+    currentChatContactName = contactName;
+    currentChatIsGroup = isGroup;
+
+    // 设置当前聊天对象
+    window.messageSender.setCurrentChat(contactId, contactName, isGroup);
+
+    // 更新聊天标题（群聊显示成员列表）
+    let title = isGroup ? `👥 ${contactName}` : `💬 ${contactName}`;
+
+    //  如果是群聊，显示成员信息
+    if (isGroup && members) {
+        const memberCount = members.split(/[、,，]/).filter(m => m.trim()).length;
+        title += ` (${memberCount}人)`;
+        $('#chat-title').html(`
+            <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                <div style="font-size: 16px; font-weight: 600;">${title}</div>
+                <div style="font-size: 11px; opacity: 0.7; margin-top: 2px;">${members}</div>
+            </div>
+        `);
+    } else {
+        $('#chat-title').text(title);
+    }
+
+    //  在聊天标题栏右侧添加删除按钮（仅群聊）
+    const $rightActions = $('#chat-right-actions');
+
+    if (isGroup) {
+        // 添加删除按钮到右上角
+        $rightActions.html(`
+            <button class="chat-delete-group-btn" data-group-id="${contactId}" data-group-name="${contactName}" 
+                    style="background: none; border: none; color: #ef4444; font-size: 22px; 
+                           cursor: pointer; padding: 0; width: 36px; height: 36px; display: flex; 
+                           align-items: center; justify-content: center; transition: transform 0.2s;"
+                    onmouseover="this.style.transform='scale(1.1)'" 
+                    onmouseout="this.style.transform='scale(1)'">
+                
+            </button>
+        `);
+    } else {
+        // 私聊时清空右侧区域
+        $rightActions.html('');
+    }
+
+    // 渲染消息列表
+    renderChatMessages(contactId, isGroup);
+
+    // 显示聊天面板
+    $('#phone-chat-panel').addClass('active');
+
+    // 清空输入框
+    $('#chat-input').val('');
+
+    //  启动自动刷新（每1000ms轮询一次）
+    if (chatPanelRefreshInterval) {
+        clearInterval(chatPanelRefreshInterval);
+    }
+    chatPanelRefreshInterval = setInterval(() => {
+        //  检查手机界面是否打开
+        const $mobileOverlay = $('#mobile-phone-overlay');
+        const isMobileOpen = $mobileOverlay.hasClass('active');
+
+        //  检查聊天面板是否打开
+        const $chatPanel = $('#phone-chat-panel');
+        const isChatOpen = $chatPanel.hasClass('active');
+
+        // 只有手机界面和聊天界面都打开时才刷新
+        // 不再在这里停止定时器，让它持续运行，只在需要时才刷新
+        if (isMobileOpen && isChatOpen) {
+            renderChatMessages(contactId, isGroup);
+        }
+        // 如果界面关闭，什么都不做，继续等待下一次检查
+    }, 1000);
+}
+
+/**
+ * 关闭聊天界面
+ */
+function closeChatPanel() {
+    $('#phone-chat-panel').removeClass('active');
+    window.messageSender.clearCurrentChat();
+
+    //  不清除 currentChatContactId 等变量，保留用于重新打开手机时的状态恢复
+    //  只清除定时器，因为聊天面板已经关闭
+
+    //  停止自动刷新
+    if (chatPanelRefreshInterval) {
+        clearInterval(chatPanelRefreshInterval);
+        chatPanelRefreshInterval = null;
+    }
+}
+
+/**
+ * 渲染聊天消息
+ */
+function renderChatMessages(contactId, isGroup = false) {
+    console.log('[renderChatMessages] 刷新聊天消息:', contactId, '群聊:', isGroup);
+    const messages = extractMessagesForContact(contactId, isGroup);
+    const $container = $('#chat-messages');
+
+    // 如果没有消息，显示空白（不显示默认消息）
+    if (messages.length === 0) {
+        $container.html('');
+        return;
+    }
+
+    let html = '';
+    messages.forEach(msg => {
+        const messageClass = msg.isMine ? 'mine' : 'other';
+
+        // 获取发送者头像（仅对非自己的消息）
+        let avatarHtml = '';
+        if (!msg.isMine) {
+            const senderName = msg.sender || contactId;
+            const avatarUrl = getCharacterAvatar(senderName);
+            if (avatarUrl) {
+                avatarHtml = `<img src="${avatarUrl}" style="width: 36px; height: 36px; border-radius: 8px; object-fit: cover; flex-shrink: 0;" onerror="this.style.display='none'">`;
+            } else {
+                // 无头像时显示首字母
+                const initial = senderName ? senderName.charAt(0) : '?';
+                avatarHtml = `<div style="width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px; flex-shrink: 0;">${initial}</div>`;
+            }
+        }
+
+        //  群聊消息显示发送者名称
+        let senderInfo = '';
+        if (isGroup) {
+            // 群聊中，所有消息都显示发送者
+            const senderName = msg.isMine ? '我' : msg.sender;
+            const senderColor = msg.isMine ? '#4CAF50' : '#2196F3';
+            senderInfo = `<div class="message-sender" style="font-size: 11px; font-weight: 600; color: ${senderColor}; margin-bottom: 4px;">${senderName}</div>`;
+        }
+
+        const typeInfo = msg.type !== '文字' ? `<div style="font-size: 11px; opacity: 0.8; margin-bottom: 3px;">[${msg.type}]</div>` : '';
+
+        //  处理消息中的图片标签
+        const processedContent = processMessageImages(msg.content);
+
+        // 根据是否是自己的消息决定布局
+        if (msg.isMine) {
+            html += `
+                <div class="message-item ${messageClass}">
+                    <div class="message-bubble">
+                        ${senderInfo}
+                        ${typeInfo}
+                        <div>${processedContent}</div>
+                        <div class="message-time">${msg.time}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            html += `
+                <div class="message-item ${messageClass}" style="display: flex; align-items: flex-start; gap: 8px;">
+                    ${avatarHtml}
+                    <div class="message-bubble">
+                        ${senderInfo}
+                        ${typeInfo}
+                        <div>${processedContent}</div>
+                        <div class="message-time">${msg.time}</div>
+                    </div>
+                </div>
+            `;
+        }
     });
 
+    $container.html(html);
+
+    //  已移除自动滚动到底部的功能，允许用户查看历史聊天记录
+    // setTimeout(() => {
+    //     $container.scrollTop($container[0].scrollHeight);
+    // }, 100);
+}
+
+// ==================== 图片处理功能 ====================
+/**
+ * 处理消息内容中的图片标签
+ * @param {string} content - 原始消息内容
+ * @returns {string} - 处理后的HTML内容
+ */
+function processMessageImages(content) {
+    if (!content) return '';
+
+    // 使用正则替换 <pic>...</pic> 为图片HTML
+    const imageRegex = /<pic>(.*?)<\/pic>/gi;
+
+    const processedContent = content.replace(imageRegex, (match, imagePath) => {
+        const imageUrl = `https://rpg.bolt.qzz.io/${imagePath.trim()}.webp`;
+        // 使用data属性存储URL，通过事件委托处理点击
+        return `<div class="message-image-container" style="margin: 8px 0;">
+            <img src="${imageUrl}" 
+                 class="message-image clickable-image" 
+                 data-image-url="${imageUrl}"
+                 style="max-width: 200px; max-height: 200px; border-radius: 8px; cursor: pointer; display: block;"
+                 onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<div class=\'image-error\' style=\'color:#999;font-size:12px;padding:8px;\'>📷 图片加载失败</div>');" />
+        </div>`;
+    });
+
+    return processedContent;
+}
+
+/**
+ * 查看完整图片（大图模式）
+ * @param {string} imageUrl - 图片URL
+ */
+function viewFullImage(imageUrl) {
+
+    // 移除已存在的查看器
+    $('#image-viewer').remove();
+
+    // 创建全屏图片查看器
+    const viewer = $('<div>', {
+        id: 'image-viewer',
+        css: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            zIndex: 999999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column'
+        }
+    });
+
+    // 关闭按钮
+    const closeBtn = $('<button>', {
+        text: '✕ 关闭',
+        css: {
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            padding: '10px 20px',
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold'
+        }
+    }).on('click', function () {
+        $('#image-viewer').remove();
+    });
+
+    // 图片元素
+    const img = $('<img>', {
+        src: imageUrl,
+        css: {
+            maxWidth: '90%',
+            maxHeight: '90%',
+            objectFit: 'contain'
+        }
+    });
+
+    viewer.append(closeBtn, img);
+
+    // 点击背景关闭
+    viewer.on('click', function (e) {
+        if (e.target === this) {
+            $(this).remove();
+        }
+    });
+
+    $('body').append(viewer);
+}
+
+/**
+ * 发送聊天消息
+ */
+async function sendChatMessage() {
+    const $input = $('#chat-input');
+    const $sendBtn = $('#chat-send-btn');
+    const $sendIcon = $sendBtn.find('i');
+    const message = $input.val().trim();
+
+    if (!message) return;
+
+
+    // 清空输入框
+    $input.val('');
+
+    try {
+        //  传递按钮引用，让 MessageSender 控制按钮状态
+        const success = await window.messageSender.sendMessage(message, {
+            button: $sendBtn,
+            icon: $sendIcon,
+            input: $input
+        });
+
+        if (success) {
+        }
+    } catch (error) {
+    }
+}
+
+// ==================== 辅助函数：从聊天记录中提取信息 ====================
+/**
+ * 从SillyTavern聊天记录中提取好友信息
+ */
+function extractFriendsFromChat() {
+    const friends = new Map();
+
+    try {
+        //  尝试获取 SillyTavern 的聊天消息（支持 iframe）
+        let messages = [];
+        const targetWindow = window.parent || window;
+
+        if (targetWindow.SillyTavern && typeof targetWindow.SillyTavern.getContext === 'function') {
+            const context = targetWindow.SillyTavern.getContext();
+            messages = context.chat || [];
+        } else {
+            return friends;
+        }
+
+        messages.forEach(msg => {
+            if (!msg.mes) return;
+            const text = msg.mes;
+
+            // 提取好友: [好友id|名字|号码]
+            const friendRegex = /\[好友id\|([^|]+)\|(\d+)\]/g;
+            let match;
+            while ((match = friendRegex.exec(text)) !== null) {
+                const name = match[1];
+                const id = match[2];
+                if (!friends.has(id)) {
+                    friends.set(id, {
+                        name,
+                        id,
+                        isGroup: false,
+                        lastMessage: '',
+                        time: new Date().toLocaleTimeString()
+                    });
+                }
+            }
+        });
+
+    } catch (error) {
+    }
+
+    return friends;
+}
+
+/**
+ * 从SillyTavern聊天记录中提取群聊信息
+ * 参考 mobile-master/app/friend-renderer.js 的实现
+ * 支持从群聊定义和群聊消息中提取
+ */
+function extractGroupsFromChat() {
+    const groupsMap = new Map();
+
+    try {
+        //  尝试获取 SillyTavern 的聊天消息（支持 iframe）
+        let messages = [];
+        const targetWindow = window.parent || window;
+
+        if (targetWindow.SillyTavern && typeof targetWindow.SillyTavern.getContext === 'function') {
+            const context = targetWindow.SillyTavern.getContext();
+            messages = context.chat || [];
+        } else {
+            return groupsMap;
+        }
+
+        // 定义正则表达式
+        const groupPattern = /\[群聊\|([^|]+)\|([^|]+)\|([^\]]+)\]/g;  // [群聊|群名|群号|成员]
+        const createGroupPattern = /\[创建群聊\|([^|]+)\|([^|]+)\|([^\]]+)\]/g;  // [创建群聊|群号|群名|成员]
+        const groupMessagePattern = /\[群聊消息\|([^|]+)\|([^|]+)\|([^|]+)\|([^\]]+)\]/g;  // [群聊消息|群ID|发送者|类型|内容]
+        const myGroupMessagePattern = /\[我方群聊消息\|我\|([^|]+)\|([^|]+)\|([^\]]+)\]/g;  // [我方群聊消息|我|群ID|类型|内容]
+
+
+        messages.forEach((msg, index) => {
+            if (!msg.mes) return;
+            let text = msg.mes;
+
+            //  清理提示词模板：从消息文本中删除模板部分，保留真实内容
+            text = text.replace(/群聊消息响应格式要求[\s\S]*?可以有多个角色回复，每个角色一条消息/g, '');
+            text = text.replace(/私聊消息响应格式要求[\s\S]*?可以回复多条消息/g, '');
+            text = text.replace(/\[群聊消息\|群号\|发送者名字\|消息类型\|消息内容\]/g, '');
+            text = text.replace(/\[对方消息\|角色名字\|号码\|消息类型\|消息内容\]/g, '');
+            text = text.replace(/\[我方消息\|我\|号码\|消息类型\|消息内容\]/g, '');
+            text = text.replace(/\[群聊\|群名\|群号\|成员列表\]/g, '');
+            text = text.replace(/\[创建群聊\|群号\|群名\|成员列表\]/g, '');
+
+            // 如果清理后的消息为空，跳过
+            if (!text.trim()) return;
+
+            // 如果消息包含群聊相关内容，记录日志
+            // if (text.includes('[群聊') || text.includes('[创建群聊')) {
+            // }
+
+            // 1. 提取群聊定义格式: [群聊|群名|群号|成员]
+            let match;
+            groupPattern.lastIndex = 0; //  重置正则索引
+            while ((match = groupPattern.exec(text)) !== null) {
+                const groupName = match[1];
+                const groupId = match[2];
+                const groupMembers = match[3];
+                const groupKey = `group_${groupId}`; // 使用群ID作为唯一标识
+
+                if (!groupsMap.has(groupKey)) {
+                    groupsMap.set(groupKey, {
+                        name: groupName,
+                        id: groupId,
+                        isGroup: true,
+                        members: groupMembers,
+                        memberCount: groupMembers.split(/[、,，]/).filter(m => m.trim()).length,
+                        messageIndex: index,
+                        lastMessage: '',
+                        time: msg.send_date || Date.now()
+                    });
+                }
+            }
+
+            // 2. 提取创建群聊格式: [创建群聊|群号|群名|成员]
+            createGroupPattern.lastIndex = 0;
+            while ((match = createGroupPattern.exec(text)) !== null) {
+                const groupId = match[1];
+                const groupName = match[2];
+                const groupMembers = match[3];
+                const groupKey = `group_${groupId}`;
+
+                if (!groupsMap.has(groupKey)) {
+                    groupsMap.set(groupKey, {
+                        name: groupName,
+                        id: groupId,
+                        isGroup: true,
+                        members: groupMembers,
+                        memberCount: groupMembers.split(/[、,，]/).filter(m => m.trim()).length,
+                        messageIndex: index,
+                        lastMessage: '',
+                        time: msg.send_date || Date.now()
+                    });
+                }
+            }
+
+            // 3. 从群聊消息中提取: [群聊消息|群ID|发送者|类型|内容]
+            groupMessagePattern.lastIndex = 0;
+            while ((match = groupMessagePattern.exec(text)) !== null) {
+                const groupId = match[1];
+                const senderName = match[2];
+                const messageType = match[3];
+                const messageContent = match[4];
+                const groupKey = `group_${groupId}`;
+
+                if (!groupsMap.has(groupKey)) {
+                    // 如果群聊不存在，创建一个基于消息的群聊记录
+                    groupsMap.set(groupKey, {
+                        name: `群聊${groupId}`,
+                        id: groupId,
+                        isGroup: true,
+                        members: senderName,
+                        memberCount: 1,
+                        messageIndex: index,
+                        lastMessage: messageContent.substring(0, 20),
+                        time: msg.send_date || Date.now()
+                    });
+                } else {
+                    // 如果已存在，更新成员列表和最新消息索引
+                    const existingGroup = groupsMap.get(groupKey);
+                    if (existingGroup.members && !existingGroup.members.includes(senderName)) {
+                        existingGroup.members += `、${senderName}`;
+                        existingGroup.memberCount = existingGroup.members.split(/[、,，]/).filter(m => m.trim()).length;
+                    }
+                    if (existingGroup.messageIndex < index) {
+                        existingGroup.messageIndex = index;
+                        existingGroup.lastMessage = messageContent.substring(0, 20);
+                        existingGroup.time = msg.send_date || Date.now();
+                    }
+                }
+            }
+
+            // 4. 从我方群聊消息中提取: [我方群聊消息|我|群ID|类型|内容]
+            myGroupMessagePattern.lastIndex = 0;
+            while ((match = myGroupMessagePattern.exec(text)) !== null) {
+                const groupId = match[1];
+                const messageType = match[2];
+                const messageContent = match[3];
+                const groupKey = `group_${groupId}`;
+
+                if (!groupsMap.has(groupKey)) {
+                    // 如果群聊不存在，创建一个基于消息的群聊记录
+                    groupsMap.set(groupKey, {
+                        name: `群聊${groupId}`,
+                        id: groupId,
+                        isGroup: true,
+                        members: '我',
+                        memberCount: 1,
+                        messageIndex: index,
+                        lastMessage: messageContent.substring(0, 20),
+                        time: msg.send_date || Date.now()
+                    });
+                } else {
+                    // 如果已存在，更新最新消息索引
+                    const existingGroup = groupsMap.get(groupKey);
+                    if (!existingGroup.members.includes('我')) {
+                        existingGroup.members += '、我';
+                        existingGroup.memberCount = existingGroup.members.split(/[、,，]/).filter(m => m.trim()).length;
+                    }
+                    if (existingGroup.messageIndex < index) {
+                        existingGroup.messageIndex = index;
+                        existingGroup.lastMessage = messageContent.substring(0, 20);
+                        existingGroup.time = msg.send_date || Date.now();
+                    }
+                }
+            }
+        });
+
+        if (groupsMap.size > 0) {
+            groupsMap.forEach((group, key) => {
+            });
+        } else {
+        }
+    } catch (error) {
+    }
+
+    return groupsMap;
+}
+
+// ==================== 面板内容生成函数 ====================
+function generateMessagesPanel(data) {
+    const relationshipSource = getRelationshipDataSource(data) || {};
+    let html = '';
+
+    //  添加创建群聊按钮（使用 class 而不是 onclick，通过事件委托绑定）
+    html += `
+        <div class="create-group-button" style="padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-bottom: 12px; border-radius: 8px; cursor: pointer;">
+            <div style="display: flex; align-items: center; justify-content: center; color: white;">
+                <span style="font-size: 20px; margin-right: 8px;"></span>
+                <span style="font-size: 14px; font-weight: 600;">创建群聊</span>
+            </div>
+        </div>
+    `;
+
+    // 提取群聊信息
+    const groups = extractGroupsFromChat();
+
+    // 提取好友信息（优先从MVU变量，如果没有则从聊天记录提取）
+    const friends = getRelationshipKeys(relationshipSource);
+
+    // 如果MVU中没有好友，尝试从聊天记录中提取
+    const chatFriends = extractFriendsFromChat();
+
+    // 用于跟踪已添加的联系人（防止重复）
+    const addedContactIds = new Set();
+    const addedContactNames = new Set();
+
+    // 渲染MVU好友
+    friends.forEach(studentKey => {
+        const friend = relationshipSource[studentKey];
+        const affection = friend.好感度 ?? 0;
+        const displayName = restoreEraText(studentKey);
+
+        // 添加到已渲染集合
+        addedContactIds.add(studentKey);
+        if (displayName) {
+            addedContactNames.add(displayName);
+        }
+
+        html += `
+            <div class="list-item contact-item" data-type="friend" data-id="${escapeHtml(studentKey)}" data-name="${escapeHtml(displayName)}" style="cursor: pointer;">
+                <div class="list-item-header">
+                    <span class="list-item-name">👤 ${escapeHtml(displayName)}</span>
+                    <span class="list-item-value">❤ ${affection}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    // 渲染从聊天记录提取的好友（不在MVU中的）
+    chatFriends.forEach(friend => {
+        const normalizedName = restoreEraText(friend.name || '');
+        // 使用更精确的去重逻辑：检查ID和名字是否都不在已添加列表中
+        if (!addedContactIds.has(friend.id) && !addedContactNames.has(normalizedName)) {
+
+            addedContactIds.add(friend.id);
+            if (normalizedName) {
+                addedContactNames.add(normalizedName);
+            }
+
+            html += `
+                <div class="list-item contact-item" data-type="friend" data-id="${escapeHtml(friend.id)}" data-name="${escapeHtml(normalizedName)}" style="cursor: pointer;">
+                    <div class="list-item-header">
+                        <span class="list-item-name">👤 ${escapeHtml(normalizedName)}</span>
+                        <span class="list-item-value" style="font-size: 11px; color: #9ca3af;">ID: ${escapeHtml(friend.id)}</span>
+                    </div>
+                    <div class="list-item-desc">
+                        来自聊天记录
+                    </div>
+                </div>
+            `;
+        } else {
+        }
+    });
+
+    // 渲染群聊
+    if (groups.size > 0) {
+        html += '<div style="margin: 16px 5px 8px; font-size: 12px; font-weight: 600; color: #6b7280;">群聊</div>';
+        groups.forEach(group => {
+            // 检查群聊是否已添加
+            if (!addedContactIds.has(group.id)) {
+                addedContactIds.add(group.id);
+
+                html += `
+                <div class="list-item contact-item" data-type="group" data-id="${escapeHtml(group.id)}" data-name="${escapeHtml(group.name)}" data-members="${escapeHtml(group.members)}" style="cursor: pointer;">
+                        <div class="list-item-header">
+                            <span class="list-item-name">👥 ${group.name}</span>
+                            <span class="list-item-value" style="font-size: 11px; color: #9ca3af;">${group.memberCount}人</span>
+                        </div>
+                        <div class="list-item-desc">
+                            ${group.members}
+                        </div>
+                    </div>
+                `;
+            } else {
+            }
+        });
+    }
+
+    return html;
+}
+
+
+// ==================== CG收集系统 ====================
+
+// SFW场景类型集合（用于判断图片路径）
+const SFW_SCENES = new Set(["不爽", "得意", "害羞", "开心", "哭泣", "生气", "通用", "战斗"]);
+
+// 五人共用的场景数据（NSFW + SFW）
+const SHARED_CG_SCENES = {
+    // SFW
+    "不爽": 3, "得意": 3, "害羞": 3, "开心": 3, "哭泣": 3, "生气": 3, "通用": 3, "战斗": 3,
+    // NSFW
+    "亲吻": 5, "传教士体位做爱": 4, "掰开小穴": 2, "抱起来做爱": 3, "抱腿站着后入": 2,
+    "抱着摸小穴": 2, "抱着躺床上": 2, "背后坐位做爱": 3, "打屁股后入": 2, "高抬腿站着后入": 2,
+    "激烈站着后入": 4, "激烈做爱": 4, "即将插入肉棒": 3, "口交": 3, "口交颜射": 2,
+    "摸胸": 4, "内射事后": 3, "女上位手淫": 2, "女上位做爱": 4, "趴床上后入": 2,
+    "趴在床上": 3, "趴着口交": 2, "乳交": 2, "射外面事后": 2, "事后口交": 3,
+    "吮吸乳头": 2, "素股": 2, "躺着抬腿做爱": 3, "舔小穴": 2, "脱衣服": 4,
+    "一起洗澡": 2, "站着后入": 2, "站着足交": 2, "指交": 3, "抓屁股做爱": 2,
+    "抓着脚足交": 2, "自己掰开小穴": 2, "自慰": 2, "坐着足交": 2, "做爱高潮": 5, "做爱射精": 4
+};
+
+// CG列表数据
+const CG_LIST = {
+    "奈雅丽": { ...SHARED_CG_SCENES },
+    "星极": { ...SHARED_CG_SCENES },
+    "法露特": { ...SHARED_CG_SCENES },
+    "亚丝娜": { ...SHARED_CG_SCENES },
+    "露露卡": { ...SHARED_CG_SCENES },
+    "红莲": { ...SHARED_CG_SCENES },
+    "奥契丝": { ...SHARED_CG_SCENES },
+    "吉普莉尔": { ...SHARED_CG_SCENES },
+    "艾克莉西娅": { ...SHARED_CG_SCENES },
+    "白": { ...SHARED_CG_SCENES },
+    "卡提希娅": { ...SHARED_CG_SCENES },
+    "爱弥斯": { ...SHARED_CG_SCENES },
+    "璐米欧儿": { ...SHARED_CG_SCENES },
+    "史蒂芬妮": { ...SHARED_CG_SCENES },
+    "达妮娅": { ...SHARED_CG_SCENES },
+    "洛茜": { ...SHARED_CG_SCENES }
+};
+
+// CG图片基础URL
+const CG_BASE_URL = "https://rpg.bolt.qzz.io/";
+
+/**
+ * 获取已解锁的CG数据
+ * @param {boolean} includeVirtual - 是否包含虚拟解锁（一键解锁）的数据
+ */
+function getUnlockedCG(includeVirtual = false) {
+    try {
+        const realData = JSON.parse(localStorage.getItem('unlocked_cg') || '{}');
+
+        if (!includeVirtual) {
+            return realData;
+        }
+
+        // 合并虚拟数据
+        const virtualData = JSON.parse(localStorage.getItem('unlocked_cg_virtual') || '{}');
+        const mergedData = JSON.parse(JSON.stringify(realData)); // 深拷贝
+
+        for (const [char, scenes] of Object.entries(virtualData)) {
+            if (!mergedData[char]) mergedData[char] = {};
+            for (const [scene, count] of Object.entries(scenes)) {
+                // 如果真实数据里没有，就用虚拟数据
+                if (!mergedData[char][scene]) {
+                    mergedData[char][scene] = count;
+                }
+            }
+        }
+        return mergedData;
+    } catch (e) {
+        console.error('读取CG数据失败:', e);
+        return {};
+    }
+}
+
+/**
+ * 保存已解锁的CG数据
+ * @param {Object} data - 要保存的CG数据
+ * @param {boolean} isVirtual - 是否保存为虚拟解锁数据
+ */
+function saveUnlockedCG(data, isVirtual = false) {
+    try {
+        const key = isVirtual ? 'unlocked_cg_virtual' : 'unlocked_cg';
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+        console.error('保存CG数据失败:', e);
+    }
+}
+
+/**
+ * 解锁CG（供外部调用）
+ * @param {string} characterName - 角色名称
+ * @param {string} sceneType - 场景类型
+ * @param {number} maxCount - 该场景的最大CG数量
+ */
+function unlockCG(characterName, sceneType, maxCount) {
+    const unlocked = getUnlockedCG();
+    if (!unlocked[characterName]) {
+        unlocked[characterName] = {};
+    }
+    if (!(sceneType in unlocked[characterName])) {
+        // 如果没传maxCount，从CG_LIST获取
+        const count = maxCount || CG_LIST[characterName]?.[sceneType] || 1;
+        unlocked[characterName][sceneType] = count;
+        saveUnlockedCG(unlocked);
+    }
+}
+
+/**
+ * 一键解锁角色的所有CG
+ * @param {string} characterName - 角色名称
+ * @param {boolean} isVirtual - 是否是虚拟解锁（仅查看，不计入真实收集）
+ * @returns {number} - 解锁的CG数量
+ */
+function unlockAllCGForCharacter(characterName, isVirtual = false) {
+    if (!CG_LIST[characterName]) return 0;
+
+    // 根据模式读取对应的数据源
+    let currentData;
+    try {
+        const key = isVirtual ? 'unlocked_cg_virtual' : 'unlocked_cg';
+        currentData = JSON.parse(localStorage.getItem(key) || '{}');
+    } catch (e) {
+        currentData = {};
+    }
+
+    if (!currentData[characterName]) {
+        currentData[characterName] = {};
+    }
+
+    let unlockedCount = 0;
+    const scenes = CG_LIST[characterName];
+
+    // 如果是虚拟解锁，还需要检查真实解锁数据，避免覆盖真实进度（虽然逻辑上虚拟集合包含真实集合，但保存时分开）
+    // 不过简单起见，虚拟解锁库只记录“通过一键解锁获得的权限”，读取时合并即可
+
+    for (const [sceneType, maxCount] of Object.entries(scenes)) {
+        if (!(sceneType in currentData[characterName])) {
+            currentData[characterName][sceneType] = maxCount;
+            unlockedCount++;
+        }
+    }
+
+    if (unlockedCount > 0) {
+        saveUnlockedCG(currentData, isVirtual);
+    }
+
+    return unlockedCount;
+}
+
+/**
+ * 获取角色的好感度（从好友列表数据中）
+ * @param {string} characterName - 角色名称
+ * @param {Object|null} relationshipSource - 可选，已解析的羁绊列表数据
+ * @returns {number} - 好感度值，如果找不到返回0
+ */
+function getCharacterAffection(characterName, relationshipSource = null) {
+    const contactSource = relationshipSource || getRelationshipDataSource();
+    if (!contactSource) return 0;
+
+    // 尝试直接匹配角色名
+    if (contactSource[characterName]) {
+        return contactSource[characterName]?.好感度 ?? 0;
+    }
+
+    // 尝试模糊匹配（角色名可能是部分匹配）
+    for (const [key, contact] of Object.entries(contactSource)) {
+        if (key.includes(characterName) || characterName.includes(key)) {
+            return contact?.好感度 ?? 0;
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * 计算CG收藏进度统计
+ * @returns {Object} - 包含总进度和各角色进度的对象
+ */
+function getCGCollectionStats() {
+    const unlocked = getUnlockedCG();
+    const stats = {
+        total: { unlocked: 0, total: 0, percentage: 0 },
+        characters: {}
+    };
+
+    for (const [charName, scenes] of Object.entries(CG_LIST)) {
+        const totalScenes = Object.keys(scenes).length;
+        const unlockedScenes = unlocked[charName] ? Object.keys(unlocked[charName]).length : 0;
+        const percentage = totalScenes > 0 ? Math.round((unlockedScenes / totalScenes) * 100) : 0;
+
+        stats.characters[charName] = {
+            unlocked: unlockedScenes,
+            total: totalScenes,
+            percentage: percentage
+        };
+
+        stats.total.unlocked += unlockedScenes;
+        stats.total.total += totalScenes;
+    }
+
+    stats.total.percentage = stats.total.total > 0
+        ? Math.round((stats.total.unlocked / stats.total.total) * 100)
+        : 0;
+
+    return stats;
+}
+
+// CG面板当前模式：'unlock'（一键解锁模式）或 'progress'（收藏进度模式）
+let cgPanelMode = 'progress';
+const CG_CHARACTER_PAGE_SIZE = 6;
+const CG_FAVORITES_STORAGE_KEY = 'dnf-phone-cg-favorite-characters';
+let cgCharacterPage = 0;
+
+function getCGFavoriteCharacters() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(CG_FAVORITES_STORAGE_KEY) || '[]');
+        return Array.isArray(raw) ? raw.filter(name => CG_LIST[name]) : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveCGFavoriteCharacters(favorites) {
+    try {
+        const validFavorites = Array.from(new Set(favorites.filter(name => CG_LIST[name])));
+        localStorage.setItem(CG_FAVORITES_STORAGE_KEY, JSON.stringify(validFavorites));
+    } catch (e) {
+        console.error('保存CG收藏角色失败:', e);
+    }
+}
+
+function isCGCharacterFavorite(characterName) {
+    return getCGFavoriteCharacters().includes(characterName);
+}
+
+function toggleCGCharacterFavorite(characterName) {
+    const favorites = getCGFavoriteCharacters();
+    const index = favorites.indexOf(characterName);
+    if (index >= 0) {
+        favorites.splice(index, 1);
+    } else if (CG_LIST[characterName]) {
+        favorites.unshift(characterName);
+    }
+    saveCGFavoriteCharacters(favorites);
+}
+
+function getSortedCGCharacters() {
+    const characters = Object.keys(CG_LIST);
+    const favoriteSet = new Set(getCGFavoriteCharacters());
+    return characters.slice().sort((a, b) => {
+        const favA = favoriteSet.has(a);
+        const favB = favoriteSet.has(b);
+        if (favA && !favB) return -1;
+        if (!favA && favB) return 1;
+        return characters.indexOf(a) - characters.indexOf(b);
+    });
+}
+
+function getCGCharacterCover(characterName) {
+    return `${CG_BASE_URL}%E5%B0%81%E9%9D%A2/${encodeURIComponent(characterName)}.webp`;
+}
+
+/**
+ * 切换CG面板模式
+ */
+function toggleCGPanelMode() {
+    cgPanelMode = cgPanelMode === 'progress' ? 'unlock' : 'progress';
+    // 重新渲染CG面板
+    if (currentPanel === 'gallery') {
+        const content = generateGalleryPanel(currentPhoneData);
+        $('#phone-app-body').html(content);
+        // 重新绑定事件需要在openAppPanel中处理
+        bindCGGalleryEvents();
+    }
+}
+
+/**
+ * 绑定CG画廊事件（抽取出来方便重用）
+ */
+function bindCGGalleryEvents() {
+    const $appBody = $('#phone-app-body');
+    if ($appBody.length === 0) return;
+
+    // 重置滚动位置到顶部，确保用户能看到模式切换按钮
+    // $appBody.scrollTop(0); // 用户要求移除强制置顶
+
+    $appBody.off('click.cggallery');
+
+    // 模式切换按钮
+    $appBody.on('click.cggallery', '.cg-mode-segment', function (e) {
+        e.stopPropagation();
+        const mode = $(this).data('mode');
+        if (mode !== cgPanelMode) {
+            toggleCGPanelMode();
+        }
+    });
+
+    // 角色封面卡：进入该角色CG列表
+    $appBody.on('click.cggallery', '.cg-character-card', function (e) {
+        if ($(e.target).closest('.cg-favorite-btn, .cg-unlock-btn').length) return;
+        e.stopPropagation();
+        const char = $(this).data('character');
+        if (char) {
+            showCGCharacterDetail(char);
+        }
+    });
+
+    // 爱心收藏/取消收藏，收藏角色自动置顶
+    $appBody.on('click.cggallery', '.cg-favorite-btn', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const char = $(this).data('character');
+        if (!char) return;
+        const wasFavorite = isCGCharacterFavorite(char);
+        toggleCGCharacterFavorite(char);
+        if (!wasFavorite) {
+            cgCharacterPage = 0;
+        }
+        const content = generateGalleryPanel(currentPhoneData);
+        $('#phone-app-body').html(content);
+        bindCGGalleryEvents();
+    });
+
+    // 角色封面列表翻页
+    $appBody.on('click.cggallery', '.cg-page-btn', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const direction = $(this).data('direction');
+        const total = getSortedCGCharacters().length;
+        const pageCount = Math.max(1, Math.ceil(total / CG_CHARACTER_PAGE_SIZE));
+        if (direction === 'prev' && cgCharacterPage > 0) {
+            cgCharacterPage--;
+        } else if (direction === 'next' && cgCharacterPage < pageCount - 1) {
+            cgCharacterPage++;
+        }
+        const content = generateGalleryPanel(currentPhoneData);
+        $('#phone-app-body').html(content);
+        bindCGGalleryEvents();
+    });
+
+    // 展开/收起详情列表
+    $appBody.on('click.cggallery', '.cg-toggle-details-btn', function (e) {
+        e.stopPropagation();
+        const $btn = $(this);
+        const $list = $btn.next('.cg-details-list');
+        const $icon = $btn.find('.fa-chevron-down');
+
+        $list.slideToggle(200, function () {
+            if ($list.is(':visible')) {
+                $icon.css('transform', 'rotate(180deg)');
+            } else {
+                $icon.css('transform', 'rotate(0deg)');
+            }
+        });
+        $btn.toggleClass('active');
+    });
+
+    // 一键解锁按钮
+    $appBody.on('click.cggallery', '.cg-unlock-btn', function (e) {
+        e.stopPropagation();
+        const char = $(this).data('character');
+        const affection = getCharacterAffection(char);
+
+        if (affection < 100) {
+            if (typeof toastr !== 'undefined') {
+                toastr.warning(`${char} 的好感度不足100，无法一键解锁！`);
+            } else {
+                alert(`${char} 的好感度不足100，无法一键解锁！`);
+            }
+            return;
+        }
+
+        // 关键修改：传入 true 表示虚拟解锁，不记录入真实存档
+        const unlockedCount = unlockAllCGForCharacter(char, true);
+
+        if (typeof toastr !== 'undefined') {
+            toastr.success(`已开启 ${char} 的预览权限`);
+        }
+
+        // 刷新面板
+        const isInDetail = $(this).closest('.cg-character-detail-container').length > 0;
+        const content = isInDetail ? generateCGCharacterDetailPanel(char, currentPhoneData) : generateGalleryPanel(currentPhoneData);
+        $('#phone-app-body').html(content);
+        bindCGGalleryEvents();
+
+        // 保持展开状态
+        if (cgPanelMode === 'unlock' && !isInDetail) {
+            $('.cg-details-list').show();
+            $('.cg-toggle-details-btn').find('.fa-chevron-down').css('transform', 'rotate(180deg)');
+            $('.cg-toggle-details-btn').addClass('active');
+        }
+    });
+
+    // 已解锁CG点击切换图片编号
+    $appBody.on('click.cggallery', '.cg-item.unlocked .cg-switch-btn', function (e) {
+        e.stopPropagation();
+        const $item = $(this).closest('.cg-item');
+        const char = $item.data('character');
+        const scene = $item.data('scene');
+        const max = parseInt($item.data('max'));
+        let current = parseInt($item.data('current'));
+
+        current = current >= max ? 1 : current + 1;
+        $item.data('current', current);
+
+        const newUrl = getCGImageUrl(char, scene, current);
+        $item.find('img').attr('src', newUrl).show();
+        $item.find('img').next().hide();
+
+        $(this).text(`${current}/${max}`);
+    });
+
+    // 点击已解锁CG查看大图
+    $appBody.on('click.cggallery', '.cg-item.unlocked', function (e) {
+        if ($(e.target).closest('.cg-switch-btn').length) return;
+
+        const char = $(this).data('character');
+        const scene = $(this).data('scene');
+        const current = parseInt($(this).data('current')) || 1;
+        const imgUrl = getCGImageUrl(char, scene, current);
+
+        showCGFullscreen(imgUrl, char, scene, current);
+    });
+}
+
+/**
+ * 生成CG图片URL
+ */
+function getCGImageUrl(characterName, sceneType, index = 1) {
+    const folder = SFW_SCENES.has(sceneType) ? 'SFW' : 'NSFW';
+    const path = `${folder}/${characterName}/${sceneType}${index}.webp`;
+    return CG_BASE_URL + encodeURIComponent(path).replace(/%2F/g, '/');
+}
+
+/**
+ * 生成CG收集面板
+ */
+function generateGalleryPanel(data) {
+    const stats = getCGCollectionStats();
+    const displayUnlockedCG = getUnlockedCG(cgPanelMode === 'unlock');
+    const relationshipSource = getRelationshipDataSource(data);
+    const characters = getSortedCGCharacters();
+    const isProgressMode = cgPanelMode === 'progress';
+    const favoriteSet = new Set(getCGFavoriteCharacters());
+    const pageCount = Math.max(1, Math.ceil(characters.length / CG_CHARACTER_PAGE_SIZE));
+
+    if (cgCharacterPage < 0) cgCharacterPage = 0;
+    if (cgCharacterPage >= pageCount) cgCharacterPage = pageCount - 1;
+
+    const pageStart = cgCharacterPage * CG_CHARACTER_PAGE_SIZE;
+    const pageCharacters = characters.slice(pageStart, pageStart + CG_CHARACTER_PAGE_SIZE);
+
+    let html = `<div class="cg-gallery-container" style="padding: 14px 14px 78px 14px; background: #f8fafc; min-height: 100%; box-sizing: border-box;">`;
+    html += renderCGGalleryStyles();
+
+    html += `
+        <div style="
+            background: #e2e8f0; 
+            border-radius: 10px; 
+            padding: 3px; 
+            display: flex; 
+            margin-bottom: 20px;
+            position: relative;
+        ">
+            <div data-mode="progress" class="cg-mode-segment" style="
+                flex: 1; text-align: center; padding: 10px 0; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; z-index: 1; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                ${isProgressMode ? 'background: #fff; color: #0f172a; box-shadow: 0 2px 4px rgba(0,0,0,0.06); transform: scale(1);' : 'color: #64748b; transform: scale(0.98);'}
+            ">收藏进度</div>
+            <div data-mode="unlock" class="cg-mode-segment" style="
+                flex: 1; text-align: center; padding: 10px 0; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; z-index: 1; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                ${!isProgressMode ? 'background: #fff; color: #0f172a; box-shadow: 0 2px 4px rgba(0,0,0,0.06); transform: scale(1);' : 'color: #64748b; transform: scale(0.98);'}
+            ">一键解锁</div>
+        </div>
+    `;
+
+    if (isProgressMode) {
+        html += `
+            <div class="cg-toggle-details-btn" style="
+                background: white; border-radius: 16px; padding: 22px; 
+                box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #f1f5f9;
+                margin-bottom: 20px; cursor: pointer; position: relative; overflow: hidden;
+            ">
+                <!-- 装饰性背景光晕 -->
+                <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); border-radius: 50%;"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 14px; position: relative; z-index: 2;">
+                    <div>
+                        <div style="font-size: 13px; color: #64748b; margin-bottom: 6px; font-weight: 500;">当前收集总览</div>
+                        <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1; letter-spacing: -0.5px;">${stats.total.percentage}<span style="font-size: 16px; color: #94a3b8; font-weight: 600; margin-left: 2px;">%</span></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 12px; color: #94a3b8; font-weight: 500;">详情</span>
+                        <i class="fas fa-chevron-down" style="font-size: 12px; color: #94a3b8; margin-left: 6px; transition: transform 0.3s;"></i>
+                    </div>
+                </div>
+                <div style="background: #f1f5f9; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 10px;">
+                    <div style="background: linear-gradient(90deg, #3b82f6, #60a5fa); width: ${stats.total.percentage}%; height: 100%; border-radius: 4px; box-shadow: 0 1px 2px rgba(59, 130, 246, 0.2);"></div>
+                </div>
+                <div style="font-size: 12px; color: #64748b; font-weight: 500; display: flex; justify-content: space-between;">
+                    <span>已解锁场景</span>
+                    <span style="color: #0f172a; font-weight: 700;">${stats.total.unlocked} <span style="color: #cbd5e1; font-weight: 400;">/</span> ${stats.total.total}</span>
+                </div>
+            </div>
+        `;
+
+        html += `<div class="cg-details-list" style="display: none; margin-bottom: 24px; background: white; border-radius: 16px; padding: 8px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);">`;
+        characters.forEach(char => {
+            const charStats = stats.characters[char];
+            const affection = getCharacterAffection(char, relationshipSource);
+            html += `
+                <div style="
+                    display: flex; align-items: center; padding: 14px 16px; 
+                    border-bottom: 1px solid #f8fafc;
+                ">
+                    <div style="width: 85px; font-weight: 700; color: #334155; font-size: 14px;">
+                        ${escapeHtml(char)}
+                        <div style="font-size: 11px; color: #94a3b8; font-weight: 500; margin-top: 2px;">${charStats.unlocked}/${charStats.total}</div>
+                    </div>
+                    <div style="flex: 1; padding: 0 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <!-- 红色爱心 -->
+                            <span style="font-size: 12px; color: #f43f5e; font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-heart"></i> ${affection}
+                            </span>
+                            <span style="font-size: 12px; color: #64748b; font-weight: 600;">${charStats.percentage}%</span>
+                        </div>
+                        <div style="background: #f1f5f9; height: 6px; border-radius: 3px; overflow: hidden;">
+                            <div style="background: ${charStats.percentage === 100 ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #3b82f6, #60a5fa)'}; width: ${charStats.percentage}%; height: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+
+    if (!isProgressMode) {
+        html += `
+            <div class="cg-toggle-details-btn" style="
+                background: white; border-radius: 16px; padding: 18px; 
+                box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #f1f5f9;
+                margin-bottom: 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+            ">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 36px; height: 36px; border-radius: 10px; background: #fff7ed; display: flex; align-items: center; justify-content: center; color: #f97316; box-shadow: 0 2px 5px rgba(249, 115, 22, 0.1);">
+                        <i class="fas fa-unlock-alt" style="font-size: 16px;"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 2px;">开启CG预览权限</div>
+                        <div style="font-size: 11px; color: #94a3b8;">需好感度 ≥ 100，不影响真实收集度</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down" style="font-size: 12px; color: #cbd5e1; transition: transform 0.3s;"></i>
+            </div>
+        `;
+
+        html += `<div class="cg-details-list" style="display: none; margin-bottom: 24px; background: white; border-radius: 16px; padding: 8px 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);">`;
+        characters.forEach(char => {
+            const charStats = stats.characters[char];
+            const affection = getCharacterAffection(char, relationshipSource);
+            const canUnlock = affection >= 100;
+
+            const charUnlockedMap = displayUnlockedCG[char] || {};
+            const totalScenes = Object.keys(CG_LIST[char]).length;
+            const currentUnlockedCount = Object.keys(charUnlockedMap).length;
+            const isUnlockedModeActive = currentUnlockedCount >= totalScenes;
+
+            let btnState = '';
+            if (isUnlockedModeActive) {
+                btnState = `<span style="color: #10b981; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px;"><i class="fas fa-check-circle"></i> 已开启</span>`;
+            } else if (canUnlock) {
+                btnState = `
+                    <button class="cg-unlock-btn" data-character="${escapeHtml(char)}" style="
+                        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); 
+                        color: white; border: none; padding: 6px 14px; 
+                        border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;
+                        box-shadow: 0 2px 6px rgba(234, 88, 12, 0.25); transition: transform 0.1s;
+                    ">开启</button>
+                `;
+            } else {
+                btnState = `<span style="color: #cbd5e1; font-size: 12px; font-weight: 500;">好感不足</span>`;
+            }
+
+            html += `
+                <div style="
+                    display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; 
+                    border-bottom: 1px solid #f8fafc;
+                ">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div>
+                            <span style="font-weight: 700; color: #334155; font-size: 14px; display: block;">${escapeHtml(char)}</span>
+                            <span style="font-size: 11px; color: #94a3b8; font-weight: 500;">真实进度: ${charStats.unlocked}/${charStats.total}</span>
+                        </div>
+                        <span style="
+                            font-size: 11px; 
+                            color: ${affection >= 100 ? '#f43f5e' : '#94a3b8'}; 
+                            background: ${affection >= 100 ? '#fff1f2' : '#f1f5f9'}; 
+                            padding: 3px 8px; border-radius: 12px; font-weight: 600;
+                            height: fit-content;
+                        ">
+                            ❤ ${affection}
+                        </span>
+                    </div>
+                    <div>${btnState}</div>
+                </div>
+            `;
+        });
+        html += `</div>`;
+    }
+
+    html += `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin: 10px 2px 12px;">
+            <div>
+                <div style="font-size:16px; font-weight:800; color:#0f172a;">角色图鉴</div>
+                <div style="font-size:11px; color:#94a3b8; margin-top:2px;">${characters.length} 人</div>
+            </div>
+            <div style="font-size:12px; color:#64748b; font-weight:700;">${cgCharacterPage + 1} / ${pageCount}</div>
+        </div>
+        <div class="cg-character-card-grid">
+    `;
+
+    pageCharacters.forEach(char => {
+        const charStats = stats.characters[char];
+        const affection = getCharacterAffection(char, relationshipSource);
+        const isFavorite = favoriteSet.has(char);
+        const charUnlockedMap = displayUnlockedCG[char] || {};
+        const totalScenes = Object.keys(CG_LIST[char]).length;
+        const currentUnlockedCount = Object.keys(charUnlockedMap).length;
+        const isPreviewActive = currentUnlockedCount >= totalScenes;
+        const canUnlock = affection >= 100;
+        const coverUrl = getCGCharacterCover(char);
+        const fallbackInitial = escapeHtml(char.charAt(0));
+        let unlockStateHtml = '';
+
+        if (!isProgressMode) {
+            if (isPreviewActive) {
+                unlockStateHtml = `<span class="cg-card-pill cg-card-pill-ok"><i class="fas fa-check-circle"></i> 已开启</span>`;
+            } else if (canUnlock) {
+                unlockStateHtml = `<button class="cg-unlock-btn cg-card-unlock-btn" data-character="${escapeHtml(char)}">开启</button>`;
+            } else {
+                unlockStateHtml = `<span class="cg-card-pill">好感不足</span>`;
+            }
+        }
+
+        html += `
+            <div class="cg-character-card" data-character="${escapeHtml(char)}">
+                <button class="cg-favorite-btn ${isFavorite ? 'active' : ''}" data-character="${escapeHtml(char)}" title="${isFavorite ? '取消收藏' : '收藏置顶'}">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <div class="cg-character-cover">
+                    <img src="${coverUrl}" alt="${escapeHtml(char)}" decoding="async"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="cg-character-cover-fallback">${fallbackInitial}</div>
+                </div>
+                <div class="cg-character-info">
+                    <div class="cg-character-name">${escapeHtml(char)}</div>
+                    <div class="cg-character-meta">
+                        <span><i class="fas fa-images"></i> ${charStats.unlocked}/${charStats.total}</span>
+                        <span><i class="fas fa-heart"></i> ${affection}</span>
+                    </div>
+                    <div class="cg-character-progress">
+                        <div style="width:${charStats.percentage}%;"></div>
+                    </div>
+                    ${unlockStateHtml ? `<div class="cg-character-action-row">${unlockStateHtml}</div>` : ''}
+                </div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+
+    if (pageCount > 1) {
+        html += `
+            <div class="cg-pagination">
+                <button class="cg-page-btn" data-direction="prev" ${cgCharacterPage === 0 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i> 上一页
+                </button>
+                <span>${cgCharacterPage + 1} / ${pageCount}</span>
+                <button class="cg-page-btn" data-direction="next" ${cgCharacterPage >= pageCount - 1 ? 'disabled' : ''}>
+                    下一页 <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        `;
+    }
+
+    html += `</div>`;
+    return html;
+}
+
+function renderCGGalleryStyles() {
+    return `
+        <style>
+            .cg-character-card-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+            .cg-character-card {
+                position: relative;
+                min-width: 0;
+                overflow: hidden;
+                border: 2px solid transparent;
+                border-radius: 12px;
+                background: #fff;
+                cursor: pointer;
+                box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+                transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            }
+            .cg-character-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(59, 130, 246, 0.45);
+                box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+            }
+            .cg-favorite-btn {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                z-index: 4;
+                width: 30px;
+                height: 30px;
+                border: 1px solid rgba(255, 255, 255, 0.65);
+                border-radius: 50%;
+                background: rgba(15, 23, 42, 0.38);
+                color: rgba(255, 255, 255, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+                backdrop-filter: blur(6px);
+                transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+            }
+            .cg-favorite-btn:hover {
+                transform: scale(1.08);
+                background: rgba(225, 29, 72, 0.92);
+                color: #fff;
+            }
+            .cg-favorite-btn.active {
+                background: #fff;
+                border-color: #fff;
+                color: #e11d48;
+            }
+            .cg-character-cover {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 3 / 4;
+                overflow: hidden;
+                background: #e2e8f0;
+            }
+            .cg-character-cover img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: top center;
+                display: block;
+                transition: transform 0.35s ease;
+            }
+            .cg-character-card:hover .cg-character-cover img {
+                transform: scale(1.06);
+            }
+            .cg-character-cover-fallback {
+                display: none;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #64748b, #334155);
+                color: #fff;
+                font-size: 34px;
+                font-weight: 800;
+            }
+            .cg-character-info {
+                position: relative;
+                z-index: 2;
+                margin-top: -18px;
+                padding: 11px 10px 12px;
+                border-radius: 12px 12px 0 0;
+                background: linear-gradient(to top, #fff 70%, rgba(255, 255, 255, 0.94));
+            }
+            .cg-character-name {
+                min-width: 0;
+                overflow: hidden;
+                color: #0f172a;
+                font-size: 15px;
+                font-weight: 800;
+                text-align: center;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .cg-character-meta {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 7px;
+                margin-top: 7px;
+                color: #64748b;
+                font-size: 11px;
+                font-weight: 700;
+            }
+            .cg-character-meta span {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                min-width: 0;
+            }
+            .cg-character-meta .fa-heart {
+                color: #e11d48;
+            }
+            .cg-character-progress {
+                height: 5px;
+                margin-top: 9px;
+                overflow: hidden;
+                border-radius: 999px;
+                background: #e2e8f0;
+            }
+            .cg-character-progress > div {
+                height: 100%;
+                border-radius: inherit;
+                background: linear-gradient(90deg, #3b82f6, #10b981);
+            }
+            .cg-character-action-row {
+                display: flex;
+                justify-content: center;
+                margin-top: 9px;
+                min-height: 24px;
+            }
+            .cg-card-pill,
+            .cg-card-unlock-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 4px;
+                min-height: 24px;
+                padding: 0 9px;
+                border: none;
+                border-radius: 999px;
+                background: #f1f5f9;
+                color: #94a3b8;
+                font-size: 11px;
+                font-weight: 800;
+                white-space: nowrap;
+            }
+            .cg-card-pill-ok {
+                background: #ecfdf5;
+                color: #059669;
+            }
+            .cg-card-unlock-btn {
+                background: linear-gradient(135deg, #f97316, #ea580c);
+                color: #fff;
+                cursor: pointer;
+                box-shadow: 0 3px 8px rgba(234, 88, 12, 0.24);
+            }
+            .cg-pagination {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                margin-top: 18px;
+                color: #64748b;
+                font-size: 13px;
+                font-weight: 800;
+            }
+            .cg-page-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                min-height: 34px;
+                padding: 0 12px;
+                border: 1px solid #dbe3ef;
+                border-radius: 10px;
+                background: #fff;
+                color: #2563eb;
+                font-size: 12px;
+                font-weight: 800;
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+            }
+            .cg-page-btn:disabled {
+                cursor: not-allowed;
+                opacity: 0.42;
+            }
+        </style>
+    `;
+}
+
+function renderCGSceneGrid(characterName, scenes, charUnlocked) {
+    let html = `<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">`;
+
+    Object.entries(scenes).forEach(([sceneType, maxCount]) => {
+        const isUnlocked = sceneType in charUnlocked;
+
+        if (isUnlocked) {
+            const imgUrl = getCGImageUrl(characterName, sceneType, 1);
+            html += `
+                <div class="cg-item unlocked" data-character="${escapeHtml(characterName)}" data-scene="${escapeHtml(sceneType)}" data-max="${maxCount}" data-current="1"
+                    style="
+                        aspect-ratio: 3/4; border-radius: 8px; overflow: hidden; position: relative; cursor: pointer; 
+                        background: #e2e8f0; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                    ">
+                    <img src="${imgUrl}" alt="${escapeHtml(sceneType)}" 
+                        style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s;" 
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display: none; position: absolute; inset: 0; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px;">加载失败</div>
+                    ${maxCount > 1 ? `
+                        <div class="cg-switch-btn" style="
+                            position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+                            color: white; font-size: 9px; padding: 2px 8px; border-radius: 12px; font-weight: 600;
+                        ">1/${maxCount}</div>
+                    ` : ''}
+                    <div style="
+                        position: absolute; bottom: 0; left: 0; right: 0; 
+                        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+                        color: white; font-size: 11px; padding: 16px 8px 6px 8px; font-weight: 500;
+                        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                    ">${escapeHtml(sceneType)}</div>
+                </div>
+            `;
+        } else {
+            html += `
+                <div class="cg-item locked" style="
+                    aspect-ratio: 3/4; border-radius: 8px; background: #f8fafc; 
+                    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+                    border: 1px dashed #cbd5e1; color: #cbd5e1;
+                ">
+                    <i class="fas fa-lock" style="font-size: 18px;"></i>
+                    <span style="font-size: 10px; font-weight: 500;">locked</span>
+                </div>
+            `;
+        }
+    });
+
+    html += `</div>`;
+    return html;
+}
+
+function generateCGCharacterDetailPanel(characterName, data) {
+    const scenes = CG_LIST[characterName];
+    if (!scenes) {
+        return '<div class="empty-message">未找到该角色CG数据</div>';
+    }
+
+    const stats = getCGCollectionStats();
+    const displayUnlockedCG = getUnlockedCG(cgPanelMode === 'unlock');
+    const relationshipSource = getRelationshipDataSource(data);
+    const charStats = stats.characters[characterName] || { unlocked: 0, total: Object.keys(scenes).length, percentage: 0 };
+    const charUnlocked = displayUnlockedCG[characterName] || {};
+    const affection = getCharacterAffection(characterName, relationshipSource);
+    const coverUrl = getCGCharacterCover(characterName);
+    const totalScenes = Object.keys(scenes).length;
+    const currentUnlockedCount = Object.keys(charUnlocked).length;
+    const isPreviewActive = currentUnlockedCount >= totalScenes;
+    const canUnlock = affection >= 100;
+
+    let unlockHtml = '';
+    if (cgPanelMode === 'unlock') {
+        if (isPreviewActive) {
+            unlockHtml = `<span style="display:inline-flex;align-items:center;gap:6px;color:#059669;background:#ecfdf5;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;"><i class="fas fa-check-circle"></i> 已开启预览</span>`;
+        } else if (canUnlock) {
+            unlockHtml = `<button class="cg-unlock-btn" data-character="${escapeHtml(characterName)}" style="border:none;border-radius:999px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(234,88,12,0.24);">开启预览</button>`;
+        } else {
+            unlockHtml = `<span style="display:inline-flex;align-items:center;gap:6px;color:#94a3b8;background:#f1f5f9;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;">好感不足</span>`;
+        }
+    }
+
+    return `
+        <div class="cg-character-detail-container" style="padding: 14px 14px 78px 14px; background: #f8fafc; min-height: 100%; box-sizing: border-box;">
+            <div style="background:#fff;border-radius:14px;padding:12px;margin-bottom:14px;box-shadow:0 6px 18px rgba(15,23,42,0.08);display:flex;gap:12px;align-items:center;">
+                <div style="width:82px;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:#e2e8f0;flex-shrink:0;">
+                    <img src="${coverUrl}" alt="${escapeHtml(characterName)}" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:top center;display:block;"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;background:linear-gradient(135deg,#64748b,#334155);color:#fff;font-size:28px;font-weight:800;">${escapeHtml(characterName.charAt(0))}</div>
+                </div>
+                <div style="min-width:0;flex:1;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;">
+                        <div style="font-size:18px;font-weight:800;color:#0f172a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(characterName)}</div>
+                        <span style="font-size:12px;color:#64748b;font-weight:800;white-space:nowrap;">${charStats.percentage}%</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#64748b;font-weight:700;margin-bottom:9px;">
+                        <span><i class="fas fa-images" style="color:#2563eb;"></i> ${charStats.unlocked}/${charStats.total}</span>
+                        <span><i class="fas fa-heart" style="color:#e11d48;"></i> ${affection}</span>
+                    </div>
+                    <div style="height:7px;background:#e2e8f0;border-radius:999px;overflow:hidden;">
+                        <div style="height:100%;width:${charStats.percentage}%;background:linear-gradient(90deg,#3b82f6,#10b981);border-radius:inherit;"></div>
+                    </div>
+                    ${unlockHtml ? `<div style="margin-top:10px;">${unlockHtml}</div>` : ''}
+                </div>
+            </div>
+            ${renderCGSceneGrid(characterName, scenes, charUnlocked)}
+        </div>
+    `;
+}
+
+function showCGCharacterDetail(characterName) {
+    const appBodyElement = document.getElementById('phone-app-body');
+    navigationStack.push({
+        title: $('#phone-app-title').text(),
+        content: $('#phone-app-body').html(),
+        scrollPosition: appBodyElement ? appBodyElement.scrollTop : 0
+    });
+
+    $('#phone-app-title').text(`🖼️ ${characterName}`);
+    $('#phone-app-body').html(generateCGCharacterDetailPanel(characterName, currentPhoneData));
+    $('#phone-app-body').scrollTop(0);
+    bindCGGalleryEvents();
+}
 
 function renderFriendListItem(contactKey, contact) {
     /* 适配变量脚本的羁绊列表结构 */
@@ -8452,3 +11691,186 @@ $(window).on('unload', () => {
     cleanupMobilePhone();
 });
 
+
+// ==================== 世界书管理 APP ====================
+// 复刻开局页 applyOpeningWorldbookRules 的世界观↔世界书映射：
+// 切换某世界观时，打开其 open 词命中的世界书条目，关闭 close 词命中的条目（close 优先）。
+// 英文关键词按大小写严格匹配（includes 默认区分大小写）。
+const PHONE_WORLDVIEWS = [
+    { id: 'corridor', label: '创世回廊',       icon: 'fa-dice',                open: ['创世回廊', 'DNF', 'NGNL', '西幻'], close: ['SAO', '琥珀', '大明', '都市'] },
+    { id: 'sao',      label: '刀剑神域',       icon: 'fa-gamepad',             open: ['创世回廊', 'SAO', '西幻'],         close: ['琥珀', 'DNF', 'NGNL', '大明', '都市'] },
+    { id: 'amber',    label: '琥珀之剑',       icon: 'fa-chess-rook',          open: ['琥珀', '西幻'],                    close: ['创世回廊', 'SAO', 'DNF', 'NGNL', '大明', '都市'] },
+    { id: 'jiuzhou',  label: '大明志异',       icon: 'fa-dragon',              open: ['大明'],                            close: ['创世回廊', 'SAO', '琥珀', 'DNF', 'NGNL', '西幻', '都市'] },
+    { id: 'dragon',   label: '屠龙与都市日常', icon: 'fa-cloud-showers-heavy', open: ['都市'],                            close: ['创世回廊', 'SAO', '琥珀', '大明', 'DNF', 'NGNL', '西幻'] }
+];
+
+function phoneGetTavernHelper() {
+    try {
+        return (window.parent && window.parent.TavernHelper) || window.TavernHelper || null;
+    } catch (e) {
+        return window.TavernHelper || null;
+    }
+}
+
+function phoneGetMvuApi() {
+    try {
+        return (window.parent && window.parent.Mvu) || (typeof Mvu !== 'undefined' ? Mvu : null) || window.Mvu || null;
+    } catch (e) {
+        return (typeof Mvu !== 'undefined') ? Mvu : null;
+    }
+}
+
+// 汇总角色卡 / 聊天 / 全局世界书名称（去重）
+async function phoneCollectWorldbookNames(TH) {
+    const set = new Set();
+    try {
+        if (typeof TH.getCharWorldbookNames === 'function') {
+            const cw = TH.getCharWorldbookNames('current') || {};
+            if (cw.primary) set.add(cw.primary);
+            (cw.additional || []).forEach(n => n && set.add(n));
+        }
+    } catch (e) {}
+    try {
+        if (typeof TH.getChatWorldbookName === 'function') {
+            const c = TH.getChatWorldbookName('current');
+            if (c) set.add(c);
+        }
+    } catch (e) {}
+    try {
+        if (typeof TH.getGlobalWorldbookNames === 'function') {
+            (TH.getGlobalWorldbookNames() || []).forEach(n => n && set.add(n));
+        }
+    } catch (e) {}
+    return Array.from(set);
+}
+
+// 写入 系统配置.世界观（复刻开局页 saveWorldviewToMvu 的路径与API）
+async function phoneSetWorldviewVariable(label) {
+    const mvu = phoneGetMvuApi();
+    if (!mvu || typeof mvu.getMvuData !== 'function' || typeof mvu.replaceMvuData !== 'function') return false;
+    try {
+        const mvuData = mvu.getMvuData({ type: 'message', message_id: 'latest' });
+        if (!mvuData) return false;
+        if (!mvuData.stat_data) mvuData.stat_data = {};
+        if (!mvuData.stat_data.系统配置) mvuData.stat_data.系统配置 = {};
+        mvuData.stat_data.系统配置.世界观 = label;
+        // 与开局页保持一致：都市世界观同时初始化对应的年历和世界剧情。
+        if (label === '屠龙与都市日常') {
+            if (!mvuData.stat_data.世界信息) mvuData.stat_data.世界信息 = {};
+            mvuData.stat_data.世界信息.年历 = '2026年';
+            mvuData.stat_data.世界信息.世界剧情 = '屠龙与都市日常';
+        }
+        await mvu.replaceMvuData(mvuData, { type: 'message', message_id: 'latest' });
+        return true;
+    } catch (e) {
+        console.error('[世界书管理] 写入世界观变量失败:', e);
+        return false;
+    }
+}
+
+function generateWorldbookPanel() {
+    // 事件委托绑定切换按钮（幂等，off/on 避免重复绑定）—— 内联 onclick 在本脚本作用域不可见
+    $('body').off('click.wbSwitch').on('click.wbSwitch', '.wb-switch-btn', function () {
+        const id = $(this).attr('data-view-id');
+        if (id) phoneSwitchWorldview(id);
+    });
+    // 渲染骨架后异步拉取世界书状态
+    setTimeout(() => { try { phoneLoadWorldbookStatus(); } catch (e) {} }, 0);
+    return `
+        <div class="settings-section">
+            <div class="settings-section-title">当前世界观</div>
+            <div class="list-item" id="wb-current-view">
+                <div class="empty-message" style="padding:10px;">读取中…</div>
+            </div>
+        </div>
+        <div class="settings-section">
+            <div class="settings-section-title">一键切换世界观</div>
+            <div id="wb-switch-buttons" style="display:flex; flex-direction:column; gap:10px;">
+                <div class="empty-message" style="padding:10px;">读取中…</div>
+            </div>
+        </div>
+    `;
+}
+
+async function phoneLoadWorldbookStatus() {
+    const data = (typeof fetchLatestMvuData === 'function') ? (fetchLatestMvuData(false) || {}) : {};
+    const currentLabel = (data && data.系统配置 && data.系统配置.世界观) || '未设置';
+    const currentView = PHONE_WORLDVIEWS.find(v => v.label === currentLabel);
+
+    // 当前世界观卡片
+    $('#wb-current-view').html(`
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#009688,#00796B);color:#fff;font-size:22px;flex-shrink:0;">
+                <i class="fas ${currentView ? currentView.icon : 'fa-globe'}"></i>
+            </div>
+            <div>
+                <div style="font-size:16px;font-weight:700;color:#2d3748;">${currentLabel}</div>
+                <div style="font-size:12px;color:#9ca3af;">系统配置 · 世界观</div>
+            </div>
+        </div>
+    `);
+
+    // 切换按钮
+    const btns = PHONE_WORLDVIEWS.map(v => {
+        const isCur = v.label === currentLabel;
+        return `<button class="wb-switch-btn" data-view-id="${v.id}" ${isCur ? 'disabled' : ''}
+            style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 14px;border-radius:12px;border:none;text-align:left;cursor:${isCur ? 'default' : 'pointer'};background:${isCur ? '#e6f4f1' : '#fff'};box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+            <span style="display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#2d3748;"><i class="fas ${v.icon}" style="color:#009688;width:18px;text-align:center;"></i>${v.label}</span>
+            <span style="font-size:12px;font-weight:600;color:${isCur ? '#10b981' : '#9ca3af'};">${isCur ? '当前' : '切换 ›'}</span>
+        </button>`;
+    }).join('');
+    $('#wb-switch-buttons').html(btns);
+};
+
+async function phoneSwitchWorldview(targetId) {
+    const view = PHONE_WORLDVIEWS.find(v => v.id === targetId);
+    if (!view) return;
+    if (!confirm(`切换到「${view.label}」？\n将打开该世界观的世界书、关闭其他世界观，并把世界观变量设为「${view.label}」。`)) return;
+
+    const TH = phoneGetTavernHelper();
+    if (!TH || typeof TH.getWorldbook !== 'function' || typeof TH.replaceWorldbook !== 'function') {
+        if (typeof toastr !== 'undefined') toastr.error('世界书 API 不可用');
+        return;
+    }
+
+    if (typeof toastr !== 'undefined') toastr.info(`正在切换到「${view.label}」…`);
+    try {
+        const names = await phoneCollectWorldbookNames(TH);
+        let changedBooks = 0, changedEntries = 0;
+        for (const wb of names) {
+            let entries = [];
+            try { entries = (await TH.getWorldbook(wb)) || []; } catch (e) { continue; }
+            let wbChanged = false;
+            const updated = entries.map(entry => {
+                const name = String((entry && entry.name) || '');
+                const hasOpen = view.open.some(t => name.includes(t));
+                const hasClose = view.close.some(t => name.includes(t));
+                if (hasOpen || hasClose) {
+                    const target = hasClose ? false : true; // close 优先，避免误开
+                    if (entry.enabled !== target) {
+                        wbChanged = true;
+                        changedEntries++;
+                        return { ...entry, enabled: target };
+                    }
+                }
+                return entry;
+            });
+            if (wbChanged) {
+                await TH.replaceWorldbook(wb, updated);
+                changedBooks++;
+            }
+        }
+
+        const varOk = await phoneSetWorldviewVariable(view.label);
+
+        if (typeof toastr !== 'undefined') {
+            toastr.success(`已切换到「${view.label}」：世界书 ${changedBooks} 本 / ${changedEntries} 条${varOk ? '' : '（世界观变量写入失败）'}`);
+        }
+        // 刷新面板
+        if (typeof fetchLatestMvuData === 'function') fetchLatestMvuData(true);
+        phoneLoadWorldbookStatus();
+    } catch (e) {
+        console.error('[世界书管理] 切换失败:', e);
+        if (typeof toastr !== 'undefined') toastr.error('切换失败：' + (e.message || e));
+    }
+};
